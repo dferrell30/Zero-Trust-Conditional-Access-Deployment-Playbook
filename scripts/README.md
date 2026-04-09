@@ -32,6 +32,8 @@ Verify:
 Get-MgContext
 ```
 
+Output:
+
 ![Connected to Graph](/images/verifyoutput.png)
 
 
