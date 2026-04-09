@@ -1,61 +1,49 @@
-# 🔐 Block Legacy Authentication
+# Block Legacy Authentication
 
----
+## Overview
 
-### Policy Summary
+This policy blocks legacy authentication protocols that do not support modern authentication controls such as MFA.
 
-#### **Purpose:**
+## Policy Summary
 
-Eliminate authentication methods that bypass modern security controls.
+### Purpose
+Prevent attackers from using older authentication methods that bypass modern security protections.
 
----
+### Activities Matching Criteria
+- All users
+- All cloud apps
+- Legacy authentication client apps
 
-#### **Activities Matching Criteria:**
+### Actions
+- Block access
 
-* All users
-* Legacy authentication clients
+### Alerts
+- Review sign-in logs for legacy authentication attempts
+- Use report-only results to identify impacted users or apps before enforcement
 
----
+### Impact Summary
 
-#### **Actions:**
+**For Users:**
+- Older clients and protocols such as legacy mail apps may stop working
+- Users may need to move to modern authentication-supported apps
 
-* Block access
+**For the Organization:**
+- Removes a common password spray and brute-force path
+- Prevents authentication flows that cannot enforce MFA
 
----
+## Use Cases
 
-## 🎯 Use Cases
+- Blocking IMAP, POP, SMTP AUTH, and other older protocols where applicable
+- Eliminating bypass paths for MFA
+- Hardening the tenant against password-based attacks
 
-* Prevent IMAP/POP attacks
-* Stop password spray via legacy protocols
+## How This Policy Protects Identity
 
----
+Legacy authentication is frequently targeted because it cannot enforce many modern security controls. Blocking it removes a major attack surface and helps ensure sign-ins go through modern authentication flows that support Conditional Access.
 
-## 🛡️ How This Protects Identity
+## Files in this Folder
 
-* Removes **non-MFA capable authentication paths**
-* Stops **automated credential attacks**
-
----
-
-## ⚙️ Implementation
-
-* Condition: Client Apps → Legacy Authentication
-* Grant: Block
-
----
-
-## 🧪 Testing
-
-* Attempt login via legacy protocol
-* Confirm block
-
----
-
-## 🚀 Rollout Strategy
-
-* Report-only first
-* Identify impacted apps
-* Enforce
-
----
-
+- `policy.json` — Conditional Access policy definition
+- `deploy.ps1` — deploy this specific policy
+- `implementation.md` — portal and deployment guidance
+- `testing.md` — validation and test steps
