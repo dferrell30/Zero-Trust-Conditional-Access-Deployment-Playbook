@@ -1,14 +1,23 @@
-$policies = @(
-    ".\policies\01-require-mfa\policy.json",
-    ".\policies\02-block-legacy-auth\policy.json",
-    ".\policies\03-device-compliance\policy.json",
-    ".\policies\04-admin-protection\policy.json",
-    ".\policies\05-session-controls\policy.json",
-    ".\policies\06-location-based\policy.json",
-    ".\policies\p2\07-user-risk-policy\policy.json",
-    ".\policies\p2\08-signin-risk-policy\policy.json"
-)
+$repoRoot = Resolve-Path "$PSScriptRoot\..\.."
+$policyRoot = Join-Path $repoRoot "policies"
+$helperScript = Join-Path $repoRoot "scripts\deployment\deploy-policy.ps1"
 
-foreach ($policy in $policies) {
-    New-ZTConditionalAccessPolicy -DisplayName $policy -JsonPath $policy
+. $helperScript
+
+Write-Host "Starting bulk deployment..."
+
+$policyFiles = Get-ChildItem -Path $policyRoot -Recurse -Filter policy.json
+
+foreach ($file in $policyFiles) {
+    $folder = Split-Path $file.FullName -Parent
+    $name = Split-Path $folder -Leaf
+
+    Write-Host "Deploying policy: $name"
+
+    New-ZTConditionalAccessPolicy `
+        -DisplayName $name `
+        -JsonPath $file.FullName `
+        -SkipIfExists
 }
+
+Write-Host "Bulk deployment complete."
