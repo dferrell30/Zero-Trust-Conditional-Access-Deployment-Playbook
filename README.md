@@ -23,9 +23,11 @@ It is designed as a **step-by-step playbook** that includes:
 
 ## 🔐 Zero Trust Architecture
 
-<img width="964" height="630" alt="image" src="https://github.com/user-attachments/assets/f2056820-6151-4cce-a29a-a5d70fba7e67" />
+![Zero Trust Architecture](images/zero-trust-architecture.png)
 
-This implementation uses Microsoft Entra ID as the identity control plane and evaluates access using multiple signals:
+This architecture uses Microsoft Entra ID as the identity control plane.
+
+Access is evaluated using multiple signals:
 
 - Identity (user, role, risk)
 - Device (compliance, join state)
