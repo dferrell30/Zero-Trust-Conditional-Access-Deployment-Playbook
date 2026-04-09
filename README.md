@@ -1,13 +1,6 @@
 # 🔐 Microsoft Entra Zero Trust Conditional Access Playbook
 
-![Microsoft Entra ID](https://img.shields.io/badge/Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge)
-![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge)
-![Conditional Access](https://img.shields.io/badge/Conditional%20Access-Playbook-0078D4?style=for-the-badge)
-![PowerShell](https://img.shields.io/badge/PowerShell-Graph%20SDK-5391FE?style=for-the-badge)
-![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen?style=for-the-badge)
-
----
+![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge) ![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge) ![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge) ![PowerShell](https://img.shields.io/badge/Automation-PowerShell%20%2F%20Graph-5391FE?style=for-the-badge) ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen?style=for-the-badge)
 
 ## 📌 Overview
 
@@ -15,11 +8,11 @@ This repository provides a **complete, production-ready implementation** of **Ze
 
 It is designed as a **step-by-step playbook** that includes:
 
-- 🔐 Policy design aligned to Zero Trust  
-- ⚙️ PowerShell-based deployment (Microsoft Graph)  
-- 🧱 Separation of Entra ID **P1 vs P2 capabilities**  
-- 📤 Export, backup, and reporting scripts  
-- 🧪 Testing and validation guidance  
+- 🔐 Policy design aligned to Zero Trust
+- ⚙️ PowerShell-based deployment (Microsoft Graph)
+- 🧱 Separation of Entra ID **P1 vs P2 capabilities**
+- 📤 Export, backup, and reporting scripts
+- 🧪 Testing and validation guidance
 
 ---
 
@@ -29,11 +22,10 @@ This project is actively maintained and refined based on testing, implementation
 
 Current focus areas:
 
-- Conditional Access policy design improvements  
-- Safer rollout guidance  
-- Export / backup / reporting enhancements  
-- Expanded Zero Trust implementation coverage  
-
+- Conditional Access policy design improvements
+- Safer rollout guidance
+- Export / backup / reporting enhancements
+- Expanded Zero Trust implementation coverage
 
 ---
 
