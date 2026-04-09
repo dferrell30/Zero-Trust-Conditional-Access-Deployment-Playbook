@@ -32,7 +32,7 @@ Verify:
 Get-MgContext
 ```
 
-[![Connected to Graph](images/verifyoutput.png)
+![Connected to Graph](/images/verifyoutput.png)
 
 
 🧱 2. Reusable Policy Deployment Framework
