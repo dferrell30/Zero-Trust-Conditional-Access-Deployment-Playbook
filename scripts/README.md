@@ -56,3 +56,41 @@ function New-ZTConditionalAccessPolicy {
     Write-Host "Policy created successfully: $DisplayName"
 }
 ```
+---
+
+🪜 Step 1 — Open PowerShell
+
+Run as Administrator
+
+🪜 Step 2 — Connect to Graph
+Connect-MgGraph -Scopes "Policy.ReadWrite.ConditionalAccess"
+
+🪜 Step 3 — Navigate to Repo
+cd C:\GitHub\entra-zero-trust-conditional-access
+
+🪜 Step 4 — Import Script
+. .\scripts\deploy-policy.ps1
+
+🪜 Step 5 — Deploy Policies
+Single policy:
+
+New-ZTConditionalAccessPolicy `
+-DisplayName "ZTCA - Require MFA" `
+-JsonPath ".\policies\01-require-mfa\policy.json"
+
+All policies:
+.\deploy-all.ps1
+
+🪜 Step 6 — Verify
+Get-MgIdentityConditionalAccessPolicy
+
+⚠️ Critical Notes (Production)
+
+Always:
+- Exclude break-glass accounts
+- Start in Report-only mode
+- Validate via Sign-in Logs
+
+Replace:
+- <BREAK_GLASS_OBJECT_ID>
+- <TRUSTED_LOCATION_ID>
