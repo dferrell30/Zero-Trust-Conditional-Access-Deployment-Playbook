@@ -18,6 +18,9 @@ It is designed as a **step-by-step playbook** that includes:
 * 📤 Export, backup, and reporting scripts
 * 🧪 Testing and validation guidance
 
+<img width="2106" height="860" alt="image" src="https://github.com/user-attachments/assets/e2312696-203a-40b9-81b7-1599b5233113" />
+
+
 ---
 
 ## 🎯 Objectives
