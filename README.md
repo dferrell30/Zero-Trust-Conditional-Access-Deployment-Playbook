@@ -18,25 +18,12 @@ It is designed as a **step-by-step playbook** that includes:
 * 📤 Export, backup, and reporting scripts
 * 🧪 Testing and validation guidance
 
-<img width="2106" height="860" alt="image" src="https://github.com/user-attachments/assets/e2312696-203a-40b9-81b7-1599b5233113" />
-
-<img width="2024" height="860" alt="image" src="https://github.com/user-attachments/assets/ed4e2d31-1b82-4a7e-a6ce-aefd5e591c81" />
-
-<img width="1417" height="740" alt="image" src="https://github.com/user-attachments/assets/a7028012-a37c-442f-998c-04c8783fd9f3" />
-
-<img width="1026" height="560" alt="image" src="https://github.com/user-attachments/assets/e7e64590-6d73-4058-ad75-bd97be4bb505" />
-
-<img width="800" height="496" alt="image" src="https://github.com/user-attachments/assets/01bbba96-08c7-40f7-a276-bd189c2a0155" />
-
-<img width="899" height="495" alt="image" src="https://github.com/user-attachments/assets/98ba82ec-86ba-4a71-a1b0-01b88a820e66" />
-
-<img width="1547" height="993" alt="image" src="https://github.com/user-attachments/assets/72e2ade5-aa42-43ec-8abf-8803726a4bad" />
-
-<img width="914" height="672" alt="image" src="https://github.com/user-attachments/assets/5707d422-802f-487c-ae4a-0e3e19869c08" />
 
 ---
 
 ## 🔐 Zero Trust Architecture
+
+<img width="964" height="630" alt="image" src="https://github.com/user-attachments/assets/f2056820-6151-4cce-a29a-a5d70fba7e67" />
 
 This implementation uses Microsoft Entra ID as the identity control plane and evaluates access using multiple signals:
 
@@ -46,6 +33,28 @@ This implementation uses Microsoft Entra ID as the identity control plane and ev
 - Session (token lifetime, persistence)
 
 All access decisions are enforced through Conditional Access policies.
+
+---
+
+## 🔄 Deployment Flow
+
+<img width="1085" height="354" alt="image" src="https://github.com/user-attachments/assets/add1e86d-7106-499d-a2a5-9c1551386add" />
+
+This flow represents how Conditional Access evaluates every sign-in attempt:
+
+1. User initiates authentication
+2. Microsoft Entra evaluates signals:
+   - Identity risk
+   - Device compliance
+   - Location
+   - Session context
+3. Conditional Access policies are applied
+4. Access is:
+   - Granted
+   - Challenged (MFA)
+   - Blocked
+
+This ensures every access request is continuously validated under Zero Trust principles.
 
 ---
 
