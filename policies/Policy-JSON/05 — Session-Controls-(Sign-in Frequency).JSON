@@ -1,0 +1,18 @@
+{
+  "displayName": "ZTCA - Session Control",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"]
+    },
+    "applications": {
+      "includeApplications": ["Office365"]
+    }
+  },
+  "sessionControls": {
+    "signInFrequency": {
+      "value": 1,
+      "type": "days"
+    }
+  }
+}
