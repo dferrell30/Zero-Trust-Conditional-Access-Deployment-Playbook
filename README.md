@@ -72,6 +72,36 @@ This ensures **defense in depth across identity, device, and session layers**.
 * Require **trusted devices**
 * Detect and respond to **identity risk (P2)**
 
+## 🔐 Phishing-Resistant MFA (Recommended Enhancement)
+
+To further strengthen identity security, implement phishing-resistant authentication methods:
+
+### Supported Methods
+
+- FIDO2 Security Keys
+- Windows Hello for Business (WHfB)
+- Certificate-Based Authentication (CBA)
+
+### Benefits
+
+- Resistant to phishing attacks
+- Eliminates OTP fatigue attacks
+- Strong device-bound authentication
+
+### Integration with This Repo
+
+These methods can be enforced using:
+
+- Authentication Strength policies
+- Conditional Access grant controls
+
+### Future Enhancement
+
+This repository can be extended to include:
+
+- Authentication Strength enforcement
+- Phishing-resistant MFA rollout guide
+
 ---
 
 ## 🧭 Table of Contents
