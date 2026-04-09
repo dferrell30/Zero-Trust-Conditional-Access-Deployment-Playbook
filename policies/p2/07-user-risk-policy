@@ -1,1 +1,38 @@
+# 🔐 User Risk Policy (P2)
+
+---
+
+### Policy Summary
+
+#### **Purpose:**
+
+Automatically respond to compromised accounts.
+
+---
+
+#### **Activities Matching Criteria:**
+
+* User risk = High
+
+---
+
+#### **Actions:**
+
+* Require password reset
+
+---
+
+## 🎯 Use Cases
+
+* Detect leaked credentials
+* Respond to identity compromise
+
+---
+
+## 🛡️ How This Protects Identity
+
+* Forces remediation of compromised identities
+* Prevents attacker persistence
+
+---
 
