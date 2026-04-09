@@ -1,0 +1,22 @@
+{
+  "displayName": "ZTCA - Session Controls",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+    },
+    "applications": {
+      "includeApplications": ["Office365"]
+    }
+  },
+  "sessionControls": {
+    "signInFrequency": {
+      "value": 1,
+      "type": "days"
+    },
+    "persistentBrowser": {
+      "mode": "never"
+    }
+  }
+}
