@@ -1,17 +1,21 @@
 {
-  "displayName": "ZTCA - Block High Risk Locations",
+  "displayName": "ZTCA - Location-Based Access",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
+    "users": {
+      "includeUsers": ["All"],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+    },
+    "applications": {
+      "includeApplications": ["Office365"]
+    },
     "locations": {
       "includeLocations": ["All"],
       "excludeLocations": ["<TRUSTED_LOCATION_ID>"]
-    },
-    "users": {
-      "includeUsers": ["All"]
     }
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["block"]
+    "builtInControls": ["mfa"]
   }
 }
