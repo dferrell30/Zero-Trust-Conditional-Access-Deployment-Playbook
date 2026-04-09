@@ -1,1 +1,17 @@
-
+{
+  "displayName": "ZTCA - Require MFA - All Users",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+    },
+    "applications": {
+      "includeApplications": ["All"]
+    }
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["mfa"]
+  }
+}
