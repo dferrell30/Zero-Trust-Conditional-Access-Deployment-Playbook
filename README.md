@@ -1,8 +1,11 @@
 # 🔐 Microsoft Entra Zero Trust Conditional Access Playbook
 
-![Zero Trust](https://img.shields.io/badge/security-zero--trust-critical)
-![Platform](https://img.shields.io/badge/platform-Microsoft%20Entra-purple)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![Microsoft Entra](https://img.shields.io/badge/Microsoft-Entra_ID-5E5ADB?style=for-the-badge&logo=microsoft)
+![Zero Trust](https://img.shields.io/badge/Security-Zero_Trust-0A66C2?style=for-the-badge&logo=microsoftdefender)
+![Conditional Access](https://img.shields.io/badge/Conditional_Access-Implementation-0078D4?style=for-the-badge)
+![PowerShell](https://img.shields.io/badge/PowerShell-Graph_SDK-5391FE?style=for-the-badge&logo=powershell)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Maintained](https://img.shields.io/badge/Maintained-Yes-brightgreen?style=for-the-badge)
 
 ## 📌 Project Status
 
