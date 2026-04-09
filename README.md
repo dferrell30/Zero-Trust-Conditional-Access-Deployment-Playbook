@@ -311,6 +311,30 @@ This repository provides a **complete Zero Trust Conditional Access framework** 
 * Scalable
 * Enterprise-ready
 
+## 🧠 Zero Trust Maturity Model
+
+<img width="1351" height="860" alt="image" src="https://github.com/user-attachments/assets/8d4f5ac8-e5c6-4bad-b2d8-46d2de39ebd9" />
+
+This implementation aligns to a Zero Trust maturity model:
+
+### Level 1 — Basic Protection
+- MFA enforcement
+- Block legacy authentication
+
+### Level 2 — Device Trust
+- Require compliant or hybrid joined devices
+- Admin protection policies
+
+### Level 3 — Session & Context
+- Session controls
+- Location-based access
+
+### Level 4 — Identity Protection (P2)
+- User risk policy
+- Sign-in risk policy
+
+This repository delivers a full progression from baseline security to advanced Zero Trust enforcement.
+
 ---
 
 ## ⚠️ Disclaimer
