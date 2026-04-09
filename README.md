@@ -1,6 +1,13 @@
-# 🔐 Microsoft Entra Zero Trust Conditional Access Playbook
+<h1>🔐 Microsoft Entra Zero Trust Conditional Access Playbook</h1>
 
-![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge) ![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge) ![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge) ![PowerShell](https://img.shields.io/badge/Automation-PowerShell%20%2F%20Graph-5391FE?style=for-the-badge) ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen?style=for-the-badge)
+<p>
+  <img src="https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Automation-PowerShell%20%2F%20Graph-5391FE?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen?style=for-the-badge" />
+</p>
 
 ## 📌 Overview
 
