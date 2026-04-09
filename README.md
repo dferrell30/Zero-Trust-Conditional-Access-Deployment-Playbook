@@ -2,7 +2,7 @@
 
 [![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge)](https://learn.microsoft.com/en-us/entra/)
 [![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge)](https://learn.microsoft.com/en-us/security/zero-trust/)
-[![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge)](docs/deployment-guide.md)
+[![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge)](https://github.com/dferrell30/Zero-Trust-Conditional-Access-Playbook/blob/main/docs/deployment-guide.md)
 [![PowerShell](https://img.shields.io/badge/Automation-PowerShell%20%2F%20Graph-5391FE?style=for-the-badge)](scripts/)
 [![Phish Resistant MFA](https://img.shields.io/badge/Phishing_Resistant-MFA-6A5ACD?style=for-the-badge)](https://github.com/dferrell30/entra-phish-resistant-mfa)
 [![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
