@@ -11,7 +11,6 @@
 ![PowerShell](https://img.shields.io/badge/PowerShell-Graph%20SDK-5391FE?style=for-the-badge)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen?style=for-the-badge)
-```
 
 
 ## 📌 Project Status
