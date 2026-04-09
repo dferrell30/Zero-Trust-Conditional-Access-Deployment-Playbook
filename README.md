@@ -36,6 +36,34 @@ It is designed as a **step-by-step playbook** that includes:
 
 ---
 
+## 🔐 Zero Trust Architecture
+
+This implementation uses Microsoft Entra ID as the identity control plane and evaluates access using multiple signals:
+
+- Identity (user, role, risk)
+- Device (compliance, join state)
+- Location (trusted vs untrusted)
+- Session (token lifetime, persistence)
+
+All access decisions are enforced through Conditional Access policies.
+
+---
+
+## 🎯 Attack Path → Policy Mapping
+
+| Attack Technique | Example | Policy That Stops It |
+|----------------|--------|---------------------|
+| Password Spray | массовые login attempts | Require MFA |
+| Legacy Auth Abuse | IMAP/POP brute force | Block Legacy Auth |
+| Stolen Credentials | Phishing | MFA + User Risk |
+| Token Theft | Session replay | Session Controls |
+| Unmanaged Device Access | Personal laptop | Device Compliance |
+| Admin Account Takeover | Privilege escalation | Admin Protection |
+| Suspicious Login | Impossible travel | Sign-in Risk Policy |
+| Compromised Account | Leaked credentials | User Risk Policy |
+
+This ensures **defense in depth across identity, device, and session layers**.
+
 ## 🎯 Objectives
 
 * Enforce **strong authentication everywhere**
