@@ -32,6 +32,8 @@ Verify:
 Get-MgContext
 ```
 
+![Connected](images/verifyoutput.png)
+
 
 🧱 2. Reusable Policy Deployment Framework
 
