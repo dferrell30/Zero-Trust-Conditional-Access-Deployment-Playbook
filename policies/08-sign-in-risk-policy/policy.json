@@ -4,7 +4,11 @@
   "conditions": {
     "signInRiskLevels": ["medium", "high"],
     "users": {
-      "includeUsers": ["All"]
+      "includeUsers": ["All"],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+    },
+    "applications": {
+      "includeApplications": ["All"]
     }
   },
   "grantControls": {
