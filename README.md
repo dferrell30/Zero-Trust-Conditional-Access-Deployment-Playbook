@@ -4,6 +4,17 @@
 ![Platform](https://img.shields.io/badge/platform-Microsoft%20Entra-purple)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
+## 📌 Project Status
+
+This project is actively maintained and refined based on testing, implementation experience, and community feedback.
+
+Current focus areas:
+
+- Conditional Access policy design improvements
+- Safer rollout guidance
+- Export / backup / reporting enhancements
+- Expanded Zero Trust implementation coverage
+
 ---
 
 ## 📌 Overview
@@ -18,6 +29,20 @@ It is designed as a **step-by-step playbook** that includes:
 * 📤 Export, backup, and reporting scripts
 * 🧪 Testing and validation guidance
 
+
+---
+
+## 👥 Who This Is For
+
+This playbook is designed for:
+
+- Microsoft Entra administrators
+- Identity and access engineers
+- Security architects
+- Microsoft 365 / Zero Trust practitioners
+- Teams building a production-ready Conditional Access baseline
+
+This repository is especially useful for organizations that want to move from basic MFA enforcement to a layered Zero Trust access model using identity, device, location, and session signals.
 
 ---
 
@@ -115,17 +140,27 @@ This repository can be extended to include:
 
 <img width="1199" height="786" alt="image" src="https://github.com/user-attachments/assets/856fc566-5ac7-4aca-8b1c-211b575680ed" />
 
-Traditional MFA can still be vulnerable to phishing and fatigue attacks.
+## 🔐 Phishing-Resistant MFA (Recommended Next Step)
 
-Phishing-resistant authentication methods provide stronger protection:
+This playbook establishes a strong Conditional Access baseline, but phishing-resistant MFA should be treated as the next major maturity step.
 
-- FIDO2 security keys
-- Windows Hello for Business
-- Certificate-based authentication
+Recommended methods:
 
-These methods are resistant to replay, interception, and phishing attacks.
+- FIDO2 Security Keys
+- Windows Hello for Business (WHfB)
+- Certificate-Based Authentication (CBA)
 
-This repository can be extended to enforce authentication strength policies for phishing-resistant MFA.
+These methods can be enforced through:
+
+- Authentication Strength policies
+- Conditional Access grant controls
+
+For a practical deployment example, see the companion implementation guide:
+
+**Phishing-Resistant MFA Guide**  
+https://github.com/dferrell30/entra-phish-resistant-mfa
+
+This creates a stronger identity layer on top of the Conditional Access baseline defined in this repository.
 
 ---
 
@@ -154,16 +189,23 @@ images/         → Diagrams and visuals
 
 ## 🔐 Conditional Access Policy Set
 
-### 🟣 Entra ID P1 — Core Zero Trust Policies
+### Entra ID P1 — Core Zero Trust Policies
 
-| #  | Policy                   | Purpose                              |
-| -- | ------------------------ | ------------------------------------ |
-| 01 | Require MFA              | Enforce strong authentication        |
-| 02 | Block Legacy Auth        | Remove insecure authentication paths |
-| 03 | Require Compliant Device | Ensure trusted endpoints             |
-| 04 | Admin Protection         | Secure privileged identities         |
-| 05 | Session Controls         | Limit token/session risk             |
-| 06 | Location-Based Access    | Context-aware authentication         |
+| Policy | Purpose |
+|---|---|
+| 01 Require MFA | Enforce strong authentication |
+| 02 Block Legacy Auth | Remove insecure authentication paths |
+| 03 Require Compliant Device | Ensure trusted endpoints |
+| 04 Admin Protection | Secure privileged identities |
+| 05 Session Controls | Limit token/session risk |
+| 06 Location-Based Access | Context-aware authentication |
+
+### Entra ID P2 — Identity Protection Policies
+
+| Policy | Purpose |
+|---|---|
+| 07 User Risk Policy | Respond to compromised accounts |
+| 08 Sign-in Risk Policy | Block or challenge risky logins |
 
 ---
 
@@ -176,18 +218,53 @@ images/         → Diagrams and visuals
 
 ---
 
-## 🛡️ Zero Trust Coverage
+## 🧭 Zero Trust Coverage
 
-| Threat                  | Protection                  |
-| ----------------------- | --------------------------- |
-| Password spray          | MFA policy                  |
+| Threat | Protection |
+|---|---|
+| Password spray | MFA policy |
 | Legacy protocol attacks | Block legacy authentication |
-| Device compromise       | Device compliance policy    |
-| Admin takeover          | Admin protection policy     |
-| Token theft             | Session controls            |
-| External attacks        | Location-based controls     |
-| Account compromise      | User risk policy (P2)       |
-| Suspicious logins       | Sign-in risk policy (P2)    |
+| Device compromise | Device compliance policy |
+| Admin takeover | Admin protection policy |
+| Token theft | Session controls |
+| External attacks | Location-based controls |
+| Account compromise | User risk policy (P2) |
+| Suspicious logins | Sign-in risk policy (P2) |
+
+---
+
+## 🚦 Recommended Rollout Strategy
+
+Do not deploy Conditional Access broadly without staged validation.
+
+Recommended order:
+
+1. Review policy design and prerequisites
+2. Identify and validate break-glass / emergency access accounts
+3. Deploy policies in report-only mode where possible
+4. Start with a pilot group
+5. Validate sign-in behavior and policy results
+6. Expand to privileged users
+7. Expand to broader production groups
+8. Enforce policies only after successful validation
+
+A phased rollout helps prevent lockouts, unexpected access failures, and misconfiguration in production.
+
+---
+
+## ⚠️ Lockout Prevention / Safety Checks
+
+Before deploying or enforcing Conditional Access policies, confirm the following:
+
+- At least one break-glass account exists and is excluded from Conditional Access
+- Admin accounts have tested MFA methods registered
+- Device compliance requirements are understood before enforcement
+- Legacy authentication dependencies have been identified
+- Named locations are validated before location-based policies are enforced
+- Pilot users have been selected and tested
+- Sign-in logs are being reviewed during rollout
+
+Do not enforce broadly until these checks are complete.
 
 ---
 
@@ -246,14 +323,35 @@ Generate:
 
 ---
 
-## 🧪 Testing & Validation
+## 🧪 Validation & Testing
 
-Each policy includes:
+After deployment, validate that policies behave as expected.
 
-* `testing.md`
-* Defined test scenarios
-* Expected outcomes
-* Rollback guidance
+### What to Validate
+
+- MFA is required where expected
+- Legacy authentication is blocked
+- Unmanaged devices are denied or challenged appropriately
+- Privileged users receive stronger controls
+- Session controls are applied where intended
+- Location-based policies evaluate correctly
+- User Risk and Sign-in Risk policies trigger correctly if P2 is available
+
+### Where to Validate
+
+- Microsoft Entra sign-in logs
+- Conditional Access policy evaluation results
+- Test accounts in pilot groups
+- Admin / privileged user sign-in scenarios
+- Managed vs unmanaged device scenarios
+- Trusted vs untrusted location scenarios
+
+### Success Criteria
+
+- No unexpected admin lockouts
+- Policy outcomes match intended design
+- Pilot users can still complete required work
+- Report-only results align with expected behavior before enforcement
 
 Use:
 
@@ -272,6 +370,23 @@ Use:
 * Communicate changes to users
 
 ---
+
+## ⚠️ Common Mistakes
+
+The following issues commonly cause problems in Conditional Access deployments:
+
+- Enforcing policies before validating break-glass access
+- Blocking legacy authentication without understanding dependencies
+- Requiring compliant devices before device management is fully ready
+- Applying broad policies to all users too early
+- Misconfiguring named locations
+- Assuming MFA alone is sufficient for Zero Trust
+- Forgetting to review report-only results before enforcement
+- Treating session controls as a substitute for strong authentication
+
+---
+
+
 
 ## 🧠 Design Principles
 
@@ -350,6 +465,20 @@ This implementation aligns to a Zero Trust maturity model:
 - Sign-in risk policy
 
 This repository delivers a full progression from baseline security to advanced Zero Trust enforcement.
+
+---
+
+## 🧠 Key Takeaway
+
+Conditional Access is most effective when it is treated as a layered control system rather than a single MFA requirement.
+
+Strong Zero Trust access design depends on:
+
+- Identity-aware enforcement
+- Device trust
+- Location context
+- Session control
+- Safe rollout and validation
 
 ---
 
