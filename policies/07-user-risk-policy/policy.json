@@ -1,17 +1,18 @@
 {
-  "displayName": "ZTCA - Block High Risk Locations",
+  "displayName": "ZTCA - User Risk Policy",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
-    "locations": {
-      "includeLocations": ["All"],
-      "excludeLocations": ["<TRUSTED_LOCATION_ID>"]
-    },
     "users": {
-      "includeUsers": ["All"]
-    }
+      "includeUsers": ["All"],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+    },
+    "applications": {
+      "includeApplications": ["All"]
+    },
+    "userRiskLevels": ["high"]
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["block"]
+    "builtInControls": ["passwordChange"]
   }
 }
