@@ -1,1 +1,16 @@
-
+{
+  "displayName": "ZTCA - Require Compliant Device",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"]
+    },
+    "applications": {
+      "includeApplications": ["Office365"]
+    }
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["compliantDevice"]
+  }
+}
