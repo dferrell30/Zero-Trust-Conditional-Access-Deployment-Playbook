@@ -1,53 +1,49 @@
-# 🔐 Require Compliant Devices
+# Require Compliant or Hybrid Joined Device
 
----
+## Overview
 
-### Policy Summary
+This policy ensures that only trusted devices can access organizational resources by requiring devices to be compliant or hybrid Azure AD joined.
 
-#### **Purpose:**
+## Policy Summary
 
-Ensure access only from trusted, managed devices.
+### Purpose
+Restrict access to corporate resources to managed and trusted devices.
 
----
+### Activities Matching Criteria
+- All users (or selected groups)
+- Selected cloud apps (typically Office 365)
+- Any device platform
 
-#### **Activities Matching Criteria:**
+### Actions
+- Require device to be marked as compliant OR hybrid Azure AD joined
 
-* Users accessing sensitive apps
+### Alerts
+- Review sign-in logs for device compliance failures
+- Monitor Conditional Access report-only results
 
----
+### Impact Summary
 
-#### **Actions:**
+**For Users:**
+- Users must enroll devices into Intune or join devices to Entra ID
+- Unmanaged devices may be blocked
 
-* Require compliant or hybrid joined device
+**For the Organization:**
+- Prevents access from unmanaged or potentially compromised devices
+- Reduces risk of data exfiltration
 
----
+## Use Cases
 
-## 🎯 Use Cases
+- Protecting Microsoft 365 data (Exchange, SharePoint, Teams)
+- Enforcing corporate device standards
+- Securing remote and BYOD access scenarios
 
-* Protect SharePoint / Exchange
-* Secure corporate data
+## How This Policy Protects Identity
 
----
+By ensuring that only trusted devices can access resources, this policy reduces the risk of compromised endpoints being used to access sensitive data.
 
-## 🛡️ How This Protects Identity
+## Files in this Folder
 
-* Prevents access from **unmanaged endpoints**
-* Reduces **data exfiltration risk**
-
----
-
-## ⚙️ Implementation
-
-* Grant → Require compliant device
-
----
-
-## 🧪 Testing
-
-* Test from:
-
-  * Managed device ✅
-  * Unmanaged device ❌
-
----
-
+- `policy.json`
+- `deploy.ps1`
+- `implementation.md`
+- `testing.md`
