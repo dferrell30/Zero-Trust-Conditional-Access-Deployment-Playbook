@@ -23,7 +23,7 @@ It is designed as a **step-by-step playbook** that includes:
 
 ## 🔐 Zero Trust Architecture
 
-![Zero Trust Architecture](images/zero-trust-architecture.png)
+![Zero Trust Architecture](images/Zerotrustaccessflowchartillustration.png)
 
 This architecture uses Microsoft Entra ID as the identity control plane.
 
