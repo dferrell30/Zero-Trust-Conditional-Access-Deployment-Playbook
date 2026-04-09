@@ -1,5 +1,7 @@
 ⚙️ 1. PowerShell Setup (Step-by-Step)
+
 📥 Install PowerShell (if needed)
+
 Install PowerShell 7
 👉 https://aka.ms/powershell
 📦 Install Required Modules
@@ -14,19 +16,28 @@ You’ll need:
 Policy.ReadWrite.ConditionalAccess
 Directory.Read.All
 Application.Read.All
+
 🔑 Connect to Microsoft Graph
+
+```Powershell
 Connect-MgGraph -Scopes `
 "Policy.ReadWrite.ConditionalAccess",
 "Directory.Read.All",
 "Application.Read.All"
+```
 
 Verify:
 
+```Powershell
 Get-MgContext
+```
+
+
 🧱 2. Reusable Policy Deployment Framework
 
 (/scripts/deploy-policy.ps1):
 
+```Powershell
 function New-ZTConditionalAccessPolicy {
     param(
         [Parameter(Mandatory=$true)]
@@ -44,3 +55,4 @@ function New-ZTConditionalAccessPolicy {
 
     Write-Host "Policy created successfully: $DisplayName"
 }
+```
