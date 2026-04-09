@@ -111,6 +111,9 @@ This repository can be extended to include:
 - Authentication Strength enforcement
 - Phishing-resistant MFA rollout guide
 
+<img width="1199" height="786" alt="image" src="https://github.com/user-attachments/assets/856fc566-5ac7-4aca-8b1c-211b575680ed" />
+
+
 ---
 
 ## 🧭 Table of Contents
