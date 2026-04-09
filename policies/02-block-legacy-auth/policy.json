@@ -2,16 +2,28 @@
   "displayName": "ZTCA - Block Legacy Authentication",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
-    "clientAppTypes": ["exchangeActiveSync", "other"],
+    "clientAppTypes": [
+      "exchangeActiveSync",
+      "other"
+    ],
     "users": {
-      "includeUsers": ["All"]
+      "includeUsers": [
+        "All"
+      ],
+      "excludeUsers": [
+        "<BREAK_GLASS_OBJECT_ID>"
+      ]
     },
     "applications": {
-      "includeApplications": ["All"]
+      "includeApplications": [
+        "All"
+      ]
     }
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["block"]
+    "builtInControls": [
+      "block"
+    ]
   }
 }
