@@ -4,8 +4,11 @@
   "conditions": {
     "users": {
       "includeRoles": [
-        "62e90394-69f5-4237-9190-012177145e10"
-      ]
+        "62e90394-69f5-4237-9190-012177145e10",
+        "e8611ab8-c189-46e8-94e1-60213ab1f814",
+        "194ae4cb-b126-40b2-bd5b-6091b380977d"
+      ],
+      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
     },
     "applications": {
       "includeApplications": ["All"]
