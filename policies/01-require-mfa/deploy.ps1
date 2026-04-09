@@ -6,5 +6,5 @@ $policyJson = Join-Path $scriptRoot "policy.json"
 . $helperScript
 
 New-ZTConditionalAccessPolicy `
-    -DisplayName "ZTCA-Require-MFA" `
+    -DisplayName "ZTCA - Require MFA - All Users" `
     -JsonPath $policyJson
