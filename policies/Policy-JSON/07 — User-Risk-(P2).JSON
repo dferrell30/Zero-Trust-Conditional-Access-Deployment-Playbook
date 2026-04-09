@@ -1,0 +1,14 @@
+{
+  "displayName": "ZTCA - User Risk Policy",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"]
+    },
+    "userRiskLevels": ["high"]
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["passwordChange"]
+  }
+}
