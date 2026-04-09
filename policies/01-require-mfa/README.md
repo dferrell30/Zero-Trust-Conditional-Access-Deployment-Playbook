@@ -1,102 +1,49 @@
+# Require MFA for All Users
 
----
+## Overview
 
-# 🔐 POLICY 01 — REQUIRE MFA
+This policy enforces multi-factor authentication for all users across all cloud apps, with emergency access accounts excluded.
 
-`/policies/01-require-mfa/README.md`
+## Policy Summary
 
-:::writing{variant="standard" id="ztca2"}
-# 🔐 Require MFA for All Users
+### Purpose
+Require a second factor for sign-in to reduce the risk of password-based compromise.
 
----
-
-## 📌 Overview
-
-This policy enforces **multi-factor authentication (MFA)** across all users and applications.
-
----
-
-### Policy Summary
-
-#### **Purpose:**  
-Prevent credential-based attacks by requiring strong authentication.
-
----
-
-#### **Activities Matching Criteria:**  
-- All users (exclude break-glass)
+### Activities Matching Criteria
+- All users
 - All cloud apps
+- Exclude break-glass / emergency accounts
 
----
+### Actions
+- Require multi-factor authentication
 
-#### **Actions:**  
-- Require MFA
+### Alerts
+- Review Microsoft Entra sign-in logs for MFA failures
+- Monitor report-only results before enforcement
 
----
+### Impact Summary
 
-#### **Alerts:**  
-- Monitor failed MFA attempts in sign-in logs
+**For Users:**
+- Users will be prompted for MFA
+- Users must register supported authentication methods
 
----
+**For the Organization:**
+- Reduces password spray and credential theft risk
+- Establishes a Zero Trust baseline for identity
 
-#### **Impact Summary:**
+## Use Cases
 
-**For Users:**  
-- Additional authentication step required
+- Baseline access protection for all users
+- Remote and hybrid workforce security
+- Compliance-driven strong authentication
 
-**For the Organization:**  
-- Blocks password spray and phishing attacks
+## How This Policy Protects Identity
 
----
+This policy helps protect identity by requiring more than a password during sign-in. Even if a password is stolen, the attacker still needs the second factor to complete authentication.
 
-## 🎯 Use Cases
+## Files in this Folder
 
-- Organization-wide baseline security
-- Remote workforce protection
-- Compliance enforcement
-
----
-
-## 🛡️ How This Protects Identity
-
-- Prevents **credential theft attacks**
-- Mitigates **password reuse risk**
-- Adds **second factor validation**
-
----
-
-## ⚙️ Implementation
-
-1. Go to Conditional Access
-2. New Policy → “Require MFA – All Users”
-3. Assign:
-   - Users: All users (exclude emergency accounts)
-   - Apps: All cloud apps
-4. Grant:
-   - Require MFA
-
----
-
-## 🧪 Testing
-
-- Test login from:
-  - New browser
-  - External network
-- Validate MFA prompt appears
-
----
-
-## 🚀 Rollout Strategy
-
-- Start in **Report-only**
-- Validate logs
-- Move to **On**
-
----
-
-## 📄 JSON
-
-```json
-{
-  "grantControls": ["mfa"]
-}
+- `policy.json` — Conditional Access policy definition
+- `deploy.ps1` — deploy this specific policy
+- `implementation.md` — portal and deployment guidance
+- `testing.md` — validation and test steps
