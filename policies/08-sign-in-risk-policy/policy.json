@@ -1,1 +1,14 @@
-
+{
+  "displayName": "ZTCA - Sign-in Risk Policy",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "signInRiskLevels": ["medium", "high"],
+    "users": {
+      "includeUsers": ["All"]
+    }
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["mfa"]
+  }
+}
