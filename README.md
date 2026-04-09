@@ -113,6 +113,17 @@ This repository can be extended to include:
 
 <img width="1199" height="786" alt="image" src="https://github.com/user-attachments/assets/856fc566-5ac7-4aca-8b1c-211b575680ed" />
 
+Traditional MFA can still be vulnerable to phishing and fatigue attacks.
+
+Phishing-resistant authentication methods provide stronger protection:
+
+- FIDO2 security keys
+- Windows Hello for Business
+- Certificate-based authentication
+
+These methods are resistant to replay, interception, and phishing attacks.
+
+This repository can be extended to enforce authentication strength policies for phishing-resistant MFA.
 
 ---
 
