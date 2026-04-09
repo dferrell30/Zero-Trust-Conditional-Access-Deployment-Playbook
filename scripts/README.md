@@ -25,7 +25,7 @@ Verify:
 Get-MgContext
 🧱 2. Reusable Policy Deployment Framework
 
-Use this function in your repo (/scripts/deploy-policy.ps1):
+(/scripts/deploy-policy.ps1):
 
 function New-ZTConditionalAccessPolicy {
     param(
