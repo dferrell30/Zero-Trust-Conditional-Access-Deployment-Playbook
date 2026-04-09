@@ -1,1 +1,37 @@
+# 🔐 Sign-in Risk Policy (P2)
+
+---
+
+### Policy Summary
+
+#### **Purpose:**
+
+Block or challenge risky login attempts.
+
+---
+
+#### **Activities Matching Criteria:**
+
+* Sign-in risk = Medium/High
+
+---
+
+#### **Actions:**
+
+* Require MFA or block
+
+---
+
+## 🎯 Use Cases
+
+* Impossible travel
+* Anonymous IP login
+
+---
+
+## 🛡️ How This Protects Identity
+
+* Stops suspicious authentication in real-time
+
+---
 
