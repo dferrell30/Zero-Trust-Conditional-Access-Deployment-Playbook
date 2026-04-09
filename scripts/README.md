@@ -94,3 +94,31 @@ Always:
 Replace:
 - <BREAK_GLASS_OBJECT_ID>
 - <TRUSTED_LOCATION_ID>
+
+---
+
+# Named Location Script Information
+
+For an IP named location, they will usually change:
+
+$DisplayName
+$IsTrusted
+$IpRanges
+
+For a country named location, they will usually change:
+
+$DisplayName
+$CountriesAndRegions
+$IncludeUnknownCountriesAndRegions
+
+Microsoft documents IP named locations as using IP ranges in IPv4 CIDR or valid IPv6 format, and country named locations as using two-letter country/region codes.
+
+How to run it
+
+Install the Graph module, then connect with the needed scopes, then run the script. Microsoft documents the Graph cmdlet for named locations in the Microsoft.Graph.Identity.SignIns module, and the Entra PowerShell alternative in Microsoft.Entra.SignIns.
+
+```Powershell
+Install-Module Microsoft.Graph -Scope CurrentUser
+Connect-MgGraph -Scopes "Policy.Read.All","Policy.ReadWrite.ConditionalAccess"
+.\create-named-location.ps1
+```
