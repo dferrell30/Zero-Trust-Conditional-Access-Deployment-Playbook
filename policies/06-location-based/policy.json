@@ -1,1 +1,17 @@
-
+{
+  "displayName": "ZTCA - Block High Risk Locations",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "locations": {
+      "includeLocations": ["All"],
+      "excludeLocations": ["<TRUSTED_LOCATION_ID>"]
+    },
+    "users": {
+      "includeUsers": ["All"]
+    }
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["block"]
+  }
+}
