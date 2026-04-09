@@ -74,3 +74,12 @@ This repository provides a **complete, production-ready implementation guide** f
 
 ---
 
+# ✅ Conditional Access Rollout Checklist
+
+- [ ] Break-glass accounts excluded
+- [ ] Policies in Report-only
+- [ ] Sign-in logs reviewed
+- [ ] Pilot group tested
+- [ ] MFA registration complete
+- [ ] Legacy auth identified
+- [ ] Policies enabled
