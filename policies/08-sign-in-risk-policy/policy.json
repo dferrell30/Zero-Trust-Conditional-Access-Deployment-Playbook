@@ -2,17 +2,29 @@
   "displayName": "ZTCA - Sign-in Risk Policy",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
-    "signInRiskLevels": ["medium", "high"],
     "users": {
-      "includeUsers": ["All"],
-      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+      "includeUsers": [
+        "All"
+      ]
     },
+    "signInRiskLevels": [
+      "medium",
+      "high"
+    ],
     "applications": {
-      "includeApplications": ["All"]
-    }
+      "includeApplications": [
+        "All"
+      ]
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["mfa"]
+    "builtInControls": [
+      "mfa"
+    ]
   }
 }
