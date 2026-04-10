@@ -1,22 +1,27 @@
 {
-  "displayName": "ZTCA - Session Controls",
+  "displayName": "ZTCA - Session Control",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": ["All"],
-      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+      "includeUsers": [
+        "All"
+      ]
     },
     "applications": {
-      "includeApplications": ["Office365"]
-    }
+      "includeApplications": [
+        "Office365"
+      ]
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
   },
   "sessionControls": {
     "signInFrequency": {
       "value": 1,
-      "type": "days"
-    },
-    "persistentBrowser": {
-      "mode": "never"
+      "type": "days",
+      "isEnabled": true
     }
   }
 }
