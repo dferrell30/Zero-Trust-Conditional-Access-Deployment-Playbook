@@ -55,6 +55,17 @@ C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main
 ```bash
 git clone https://github.com/<your-username>/Zero-Trust-Conditional-Access-Playbook.git
 ```
+--- 
+
+## ⚠️ PowerShell Execution Policy
+
+If scripts are blocked, run this before deployment:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+This is temporary and only applies to the current PowerShell session.
 
 ---
 
