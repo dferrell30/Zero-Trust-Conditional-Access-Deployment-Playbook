@@ -47,3 +47,24 @@ By ensuring that only trusted devices can access resources, this policy reduces 
 - `deploy.ps1`
 - `implementation.md`
 - `testing.md`
+
+## ⚠️ Break-Glass Account Requirement
+
+This policy **does not include break-glass exclusions by default** in the starter configuration.
+
+Before enabling in production:
+
+* Add emergency access account exclusions
+* Validate admin access scenarios
+* Confirm no lockout risk
+
+Example:
+
+```json
+"excludeUsers": [
+  "<BREAK_GLASS_OBJECT_ID>"
+]
+```
+
+Replace with a real object ID before enforcement.
+
