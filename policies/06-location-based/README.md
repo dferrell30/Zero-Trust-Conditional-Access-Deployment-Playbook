@@ -67,3 +67,21 @@ Example:
 ```
 
 Replace with a real object ID before enforcement.
+
+## ⚠️ Named Location Dependency
+
+This policy depends on a properly configured **trusted location**.
+
+The default configuration does NOT include real IP addresses.
+
+Before enabling:
+
+* Create a named location with real IP ranges
+* Mark it as "trusted"
+* Validate detection in sign-in logs
+
+Failure to configure this correctly may result in:
+
+* Blocking all users
+* Misidentifying trusted traffic
+
