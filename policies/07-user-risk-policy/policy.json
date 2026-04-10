@@ -3,16 +3,23 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": ["All"],
-      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+      "includeUsers": [
+        "All"
+      ]
     },
+    "userRiskLevels": [
+      "high"
+    ],
     "applications": {
-      "includeApplications": ["All"]
-    },
-    "userRiskLevels": ["high"]
+      "includeApplications": [
+        "All"
+      ]
+    }
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["passwordChange"]
+    "builtInControls": [
+      "passwordChange"
+    ]
   }
 }
