@@ -3,19 +3,14 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": [
-        "All"
-      ]
+      "includeUsers": ["All"]
     },
     "applications": {
-      "includeApplications": [
-        "All"
-      ]
+      "includeApplications": ["All"]
     },
     "locations": {
-      "includeLocations": [
-        "All"
-      ]
+      "includeLocations": ["All"],
+      "excludeLocations": ["AllTrusted"]
     },
     "clientAppTypes": [
       "browser",
@@ -24,8 +19,6 @@
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": [
-      "block"
-    ]
+    "builtInControls": ["block"]
   }
 }
