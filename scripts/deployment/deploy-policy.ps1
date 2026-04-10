@@ -1,49 +1,39 @@
 <#
 .SYNOPSIS
-Deploy a single Microsoft Entra Conditional Access policy from a JSON file.
+Deploys a single Microsoft Entra Conditional Access policy from a JSON file.
 
-.DESCRIPTION
-- Reads a policy JSON file from disk
-- Connects to Microsoft Graph if needed
-- Creates the Conditional Access policy
-- Intended to be called by per-policy deploy.ps1 scripts
+.PARAMETER JsonPath
+Path to the policy JSON file.
 
-.REQUIREMENTS
-- Microsoft.Graph PowerShell module
-- Graph scopes:
-  Policy.ReadWrite.ConditionalAccess
-  Directory.Read.All
-  Application.Read.All
+.EXAMPLE
+.\scripts\deployment\deploy-policy.ps1 -JsonPath ".\policies\01-require-mfa\policy.json"
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$JsonPath
+)
 
 $ErrorActionPreference = "Stop"
 
-function Ensure-GraphModule {
-    if (-not (Get-Module -ListAvailable -Name Microsoft.Graph.Identity.SignIns)) {
-        Write-Host "Microsoft.Graph.Identity.SignIns not found. Installing Microsoft.Graph..."
-        Install-Module Microsoft.Graph -Scope CurrentUser -Force
+function Ensure-GraphReady {
+    if (-not (Get-Module -ListAvailable -Name Microsoft.Graph)) {
+        throw "Microsoft.Graph is not installed. Run .\scripts\deployment\install-prereqs.ps1 first."
     }
 
     Import-Module Microsoft.Graph.Identity.SignIns -ErrorAction Stop
-}
 
-function Connect-ToGraphIfNeeded {
+    $ctx = Get-MgContext -ErrorAction SilentlyContinue
+    if (-not $ctx) {
+        throw "Not connected to Microsoft Graph. Run .\scripts\deployment\install-prereqs.ps1 first."
+    }
+
     $requiredScopes = @(
         "Policy.ReadWrite.ConditionalAccess",
         "Directory.Read.All",
         "Application.Read.All"
     )
-
-    $ctx = Get-MgContext -ErrorAction SilentlyContinue
-
-    if (-not $ctx) {
-        Write-Host "Connecting to Microsoft Graph..."
-        Connect-MgGraph -Scopes $requiredScopes | Out-Null
-        return
-    }
 
     $missingScopes = @()
     foreach ($scope in $requiredScopes) {
@@ -53,94 +43,44 @@ function Connect-ToGraphIfNeeded {
     }
 
     if ($missingScopes.Count -gt 0) {
-        Write-Host "Current Graph session is missing required scopes. Reconnecting..."
-        Connect-MgGraph -Scopes $requiredScopes | Out-Null
-    }
-    else {
-        Write-Host "Already connected to Microsoft Graph as $($ctx.Account)"
+        throw "Current Graph session is missing required scopes: $($missingScopes -join ', '). Run .\scripts\deployment\install-prereqs.ps1 again."
     }
 }
 
-function Resolve-PolicyJsonPath {
+function Resolve-RepoRelativePath {
     param(
         [Parameter(Mandatory = $true)]
-        [string]$JsonPath
+        [string]$PathValue
     )
 
-    if (-not (Test-Path -Path $JsonPath)) {
-        throw "Policy JSON file not found: $JsonPath"
+    if ([System.IO.Path]::IsPathRooted($PathValue)) {
+        return (Resolve-Path -Path $PathValue).Path
     }
 
-    return (Resolve-Path -Path $JsonPath).Path
-}
+    $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+    $combined = Join-Path $repoRoot $PathValue
 
-function Get-PolicyBodyFromJson {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$JsonPath
-    )
-
-    $resolvedPath = Resolve-PolicyJsonPath -JsonPath $JsonPath
-    $rawJson = Get-Content -Path $resolvedPath -Raw
-
-    if ([string]::IsNullOrWhiteSpace($rawJson)) {
-        throw "Policy JSON file is empty: $resolvedPath"
+    if (-not (Test-Path $combined)) {
+        throw "JSON file not found: $combined"
     }
 
-    return ($rawJson | ConvertFrom-Json -AsHashtable -Depth 100)
+    return (Resolve-Path -Path $combined).Path
 }
 
-function Test-ExistingPolicyByName {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$DisplayName
-    )
+Ensure-GraphReady
 
-    $existing = Get-MgIdentityConditionalAccessPolicy -All |
-        Where-Object { $_.DisplayName -eq $DisplayName } |
-        Select-Object -First 1
+$resolvedJsonPath = Resolve-RepoRelativePath -PathValue $JsonPath
+Write-Host "Using JSON file: $resolvedJsonPath"
 
-    return $existing
+$policyObject = Get-Content -Path $resolvedJsonPath -Raw | ConvertFrom-Json -Depth 100
+
+if (-not $policyObject.displayName) {
+    throw "JSON file is missing displayName."
 }
 
-function New-ZTConditionalAccessPolicy {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$DisplayName,
+Write-Host "Creating policy: $($policyObject.displayName)"
+$result = New-MgIdentityConditionalAccessPolicy -BodyParameter $policyObject
 
-        [Parameter(Mandatory = $true)]
-        [string]$JsonPath,
-
-        [switch]$SkipIfExists
-    )
-
-    Ensure-GraphModule
-    Connect-ToGraphIfNeeded
-
-    Write-Host "Preparing to deploy policy: $DisplayName"
-
-    $existing = Test-ExistingPolicyByName -DisplayName $DisplayName
-    if ($existing) {
-        if ($SkipIfExists) {
-            Write-Host "Policy already exists. Skipping: $DisplayName"
-            return $existing
-        }
-
-        throw "A Conditional Access policy with this display name already exists: $DisplayName"
-    }
-
-    $policyBody = Get-PolicyBodyFromJson -JsonPath $JsonPath
-
-    # Ensure displayName matches the wrapper script input
-    $policyBody["displayName"] = $DisplayName
-
-    Write-Host "Creating Conditional Access policy..."
-    $createdPolicy = New-MgIdentityConditionalAccessPolicy -BodyParameter $policyBody
-
-    Write-Host "Policy created successfully."
-    Write-Host "Display Name: $($createdPolicy.DisplayName)"
-    Write-Host "Policy Id:    $($createdPolicy.Id)"
-
-    return $createdPolicy
-}
+Write-Host "Policy created successfully."
+Write-Host "Display Name: $($result.DisplayName)"
+Write-Host "Policy ID:    $($result.Id)"
