@@ -144,28 +144,6 @@ This repository can be extended to include:
 
 <img width="1199" height="786" alt="image" src="https://github.com/user-attachments/assets/856fc566-5ac7-4aca-8b1c-211b575680ed" />
 
-## 🔐 Phishing-Resistant MFA (Recommended Next Step)
-
-This playbook establishes a strong Conditional Access baseline, but phishing-resistant MFA should be treated as the next major maturity step.
-
-Recommended methods:
-
-- FIDO2 Security Keys
-- Windows Hello for Business (WHfB)
-- Certificate-Based Authentication (CBA)
-
-These methods can be enforced through:
-
-- Authentication Strength policies
-- Conditional Access grant controls
-
-For a practical deployment example, see the companion implementation guide:
-
-**Phishing-Resistant MFA Guide**  
-https://github.com/dferrell30/entra-phish-resistant-mfa
-
-This creates a stronger identity layer on top of the Conditional Access baseline defined in this repository.
-
 ---
 
 ## 🧭 Table of Contents
@@ -403,6 +381,8 @@ This playbook follows Zero Trust:
 ---
 
 ## 🚀 Recommended Rollout Order
+
+### See README in Scripts folder for full details on how to prepare and run the scripts to deploy once you clone the repo.
 
 1. Require MFA
 2. Block legacy authentication
