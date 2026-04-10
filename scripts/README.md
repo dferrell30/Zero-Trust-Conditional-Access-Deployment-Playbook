@@ -59,14 +59,14 @@ git clone https://github.com/<your-username>/Zero-Trust-Conditional-Access-Playb
 
 ## ⚠️ PowerShell Execution Policy
 
-If scripts are blocked, run this before deployment:
+Run each line individually.
 
-```powershell
+```Powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
-
-This is temporary and only applies to the current PowerShell session.
-
+```Powershell
+Get-ChildItem -Recurse | Unblock-File
+```
 ---
 
 ## Step 2 — Open the Repository Root
