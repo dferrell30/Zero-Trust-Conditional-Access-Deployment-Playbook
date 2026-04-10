@@ -1,24 +1,22 @@
 {
-  "displayName": "ZTCA - Block Untrusted Locations",
-  "state": "enabledForReportingButNotEnforced",
-  "conditions": {
-    "users": {
-      "includeUsers": ["All"]
-    },
-    "applications": {
-      "includeApplications": ["All"]
-    },
-    "locations": {
-      "includeLocations": ["All"],
-      "excludeLocations": ["AllTrusted"]
-    },
-    "clientAppTypes": [
-      "browser",
-      "mobileAppsAndDesktopClients"
-    ]
-  },
-  "grantControls": {
-    "operator": "OR",
-    "builtInControls": ["block"]
-  }
+  "ipLocations": [
+    {
+      "name": "ZTCA - Trusted HQ",
+      "isTrusted": true,
+      "ipRanges": [
+        "52.183.10.25/32",
+        "40.112.0.0/16"
+      ]
+    }
+  ],
+  "geoLocations": [
+    {
+      "name": "ZTCA - Blocked Countries",
+      "countries": [
+        "RU",
+        "CN",
+        "KP"
+      ]
+    }
+  ]
 }
