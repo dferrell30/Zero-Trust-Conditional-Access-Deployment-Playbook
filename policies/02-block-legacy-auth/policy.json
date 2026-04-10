@@ -1,5 +1,5 @@
 {
-  "displayName": "ZTCA - Block Legacy Authentication",
+  "displayName": "ZTCA - Require Compliant Device",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
@@ -9,18 +9,18 @@
     },
     "applications": {
       "includeApplications": [
-        "All"
+        "Office365"
       ]
     },
     "clientAppTypes": [
-      "exchangeActiveSync",
-      "other"
+      "browser",
+      "mobileAppsAndDesktopClients"
     ]
   },
   "grantControls": {
     "operator": "OR",
     "builtInControls": [
-      "block"
+      "compliantDevice"
     ]
   }
 }
