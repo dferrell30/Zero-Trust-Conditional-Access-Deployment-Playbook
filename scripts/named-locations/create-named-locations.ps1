@@ -84,7 +84,7 @@ Ensure-GraphReady
 $configPathResolved = Resolve-ConfigPath -PathValue $ConfigPath
 Write-Host "Using config: $configPathResolved"
 
-$config = Get-Content $configPathResolved -Raw | ConvertFrom-Json -Depth 100
+$config = Get-Content $configPathResolved -Raw | ConvertFrom-Json
 $existingLocations = Get-MgIdentityConditionalAccessNamedLocation -All
 
 foreach ($loc in $config.ipLocations) {
