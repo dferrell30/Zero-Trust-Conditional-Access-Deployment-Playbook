@@ -1,12 +1,7 @@
 <#
 .SYNOPSIS
 Deploys a single Microsoft Entra Conditional Access policy from a JSON file.
-
-.PARAMETER JsonPath
-Path to the policy JSON file.
-
-.EXAMPLE
-.\scripts\deployment\deploy-policy.ps1 -JsonPath ".\policies\01-require-mfa\policy.json"
+Automatically resolves named locations referenced as NAME:<displayName>.
 #>
 
 [CmdletBinding()]
@@ -27,7 +22,8 @@ function Ensure-GraphReady {
     $requiredScopes = @(
         "Policy.ReadWrite.ConditionalAccess",
         "Directory.Read.All",
-        "Application.Read.All"
+        "Application.Read.All",
+        "Policy.Read.All"
     )
 
     $ctx = Get-MgContext -ErrorAction SilentlyContinue
@@ -52,10 +48,7 @@ function Ensure-GraphReady {
 }
 
 function Resolve-RepoRelativePath {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PathValue
-    )
+    param([string]$PathValue)
 
     if ([System.IO.Path]::IsPathRooted($PathValue)) {
         if (-not (Test-Path $PathValue)) {
@@ -75,14 +68,9 @@ function Resolve-RepoRelativePath {
 }
 
 function ConvertTo-HashtableRecursive {
-    param(
-        [Parameter(Mandatory = $true)]
-        $InputObject
-    )
+    param($InputObject)
 
-    if ($null -eq $InputObject) {
-        return $null
-    }
+    if ($null -eq $InputObject) { return $null }
 
     if ($InputObject -is [System.Collections.IDictionary]) {
         $hash = @{}
@@ -111,6 +99,58 @@ function ConvertTo-HashtableRecursive {
     return $InputObject
 }
 
+function Resolve-NamedLocationReference {
+    param(
+        [string]$Value,
+        [array]$AllNamedLocations
+    )
+
+    if ($Value -eq "All" -or $Value -eq "AllTrusted") {
+        return $Value
+    }
+
+    if ($Value -like "NAME:*") {
+        $displayName = $Value.Substring(5)
+        $match = $AllNamedLocations | Where-Object { $_.DisplayName -eq $displayName } | Select-Object -First 1
+
+        if (-not $match) {
+            throw "Named location not found: $displayName"
+        }
+
+        return $match.Id
+    }
+
+    return $Value
+}
+
+function Resolve-LocationReferencesInPolicy {
+    param(
+        [hashtable]$PolicyBody,
+        [array]$AllNamedLocations
+    )
+
+    if (-not $PolicyBody.ContainsKey("conditions")) { return $PolicyBody }
+    if (-not $PolicyBody.conditions.ContainsKey("locations")) { return $PolicyBody }
+
+    if ($PolicyBody.conditions.locations.ContainsKey("includeLocations")) {
+        $resolved = @()
+        foreach ($loc in $PolicyBody.conditions.locations.includeLocations) {
+            $resolved += (Resolve-NamedLocationReference -Value $loc -AllNamedLocations $AllNamedLocations)
+        }
+        $PolicyBody.conditions.locations.includeLocations = $resolved
+    }
+
+    if ($PolicyBody.conditions.locations.ContainsKey("excludeLocations")) {
+        $resolved = @()
+        foreach ($loc in $PolicyBody.conditions.locations.excludeLocations) {
+            $resolved += (Resolve-NamedLocationReference -Value $loc -AllNamedLocations $AllNamedLocations)
+        }
+        $PolicyBody.conditions.locations.excludeLocations = $resolved
+    }
+
+    return $PolicyBody
+}
+
 Ensure-GraphReady
 
 $resolvedJsonPath = Resolve-RepoRelativePath -PathValue $JsonPath
@@ -120,6 +160,9 @@ $rawJson = Get-Content -Path $resolvedJsonPath -Raw
 $policyObject = $rawJson | ConvertFrom-Json -Depth 100
 $body = ConvertTo-HashtableRecursive -InputObject $policyObject
 
+$namedLocations = Get-MgIdentityConditionalAccessNamedLocation -All
+$body = Resolve-LocationReferencesInPolicy -PolicyBody $body -AllNamedLocations $namedLocations
+
 if (-not $body.displayName) {
     throw "JSON file is missing displayName."
 }
@@ -128,7 +171,6 @@ Write-Host "Creating policy: $($body.displayName)"
 
 try {
     $result = New-MgIdentityConditionalAccessPolicy -BodyParameter $body -ErrorAction Stop
-
     Write-Host "Policy created successfully."
     Write-Host "Display Name: $($result.DisplayName)"
     Write-Host "Policy ID:    $($result.Id)"
