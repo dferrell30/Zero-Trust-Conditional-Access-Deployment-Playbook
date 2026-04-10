@@ -3,23 +3,18 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": [
-        "All"
-      ],
-      "excludeUsers": [
-        "<BREAK_GLASS_OBJECT_ID>"
-      ]
+      "includeUsers": ["All"]
     },
     "applications": {
-      "includeApplications": [
-        "All"
-      ]
-    }
+      "includeApplications": ["All"]
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": [
-      "mfa"
-    ]
+    "builtInControls": ["mfa"]
   }
 }
