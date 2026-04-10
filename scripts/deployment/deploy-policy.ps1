@@ -87,7 +87,7 @@ function Get-PolicyBodyFromJson {
         throw "Policy JSON file is empty: $resolvedPath"
     }
 
-    return ($rawJson | ConvertFrom-Json -Depth 100)
+    return ($rawJson | ConvertFrom-Json -AsHashtable -Depth 100)
 }
 
 function Test-ExistingPolicyByName {
@@ -131,6 +131,9 @@ function New-ZTConditionalAccessPolicy {
     }
 
     $policyBody = Get-PolicyBodyFromJson -JsonPath $JsonPath
+
+    # Ensure displayName matches the wrapper script input
+    $policyBody["displayName"] = $DisplayName
 
     Write-Host "Creating Conditional Access policy..."
     $createdPolicy = New-MgIdentityConditionalAccessPolicy -BodyParameter $policyBody
