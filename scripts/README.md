@@ -59,6 +59,34 @@ git clone https://github.com/<your-username>/Zero-Trust-Conditional-Access-Playb
 
 ## ⚠️ PowerShell Execution Policy
 
+## PowerShell execution options
+
+### Recommended for most users
+
+Use a temporary execution-policy bypass for the current PowerShell session:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Get-ChildItem -Recurse | Unblock-File
+```
+
+This is the most compatible option for first-time users because it does not permanently change the system.
+
+### Optional for repeat local use
+
+If you run the scripts often on your own workstation, you can set:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+Get-ChildItem -Recurse | Unblock-File
+```
+
+This reduces the need to run the temporary bypass each time.
+
+### Enterprise option
+
+For managed environments, consider code-signing the scripts or deploying through CI/CD instead of relying on local execution.
+
 Run each line individually.
 
 ```Powershell
