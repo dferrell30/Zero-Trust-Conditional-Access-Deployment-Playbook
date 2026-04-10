@@ -1,112 +1,94 @@
 <#
 .SYNOPSIS
-Create or update a Conditional Access named location (IP or Country).
+Creates Microsoft Entra Named Locations (IP + Geo-based)
 
 .DESCRIPTION
-- Supports IP ranges (CIDR)
-- Supports country-based locations
-- Updates if name already exists
+- Creates trusted IP-based locations
+- Creates country-based locations
+- Avoids duplicates
+- Designed for Zero Trust automation
 #>
 
-# =========================
-# USER CONFIGURATION
-# =========================
-
-# Type: "IP" or "Country"
-$LocationType = "IP"
-
-# Name shown in Entra
-$DisplayName = "ZTCA - Trusted Location"
-
-# Update existing if found
-$UpdateIfExists = $true
-
-# IP-based config
-$IsTrusted = $true
-$IpRanges = @(
-    "203.0.113.10/32",
-    "198.51.100.0/24"
+[CmdletBinding()]
+param(
+    [string]$ConfigPath = ".\scripts\named-locations\locations-config.json"
 )
-
-# Country-based config
-$CountriesAndRegions = @(
-    "US",
-    "CA"
-)
-$IncludeUnknownCountriesAndRegions = $false
-
-# =========================
 
 $ErrorActionPreference = "Stop"
 
-function Connect-Graph {
-    $ctx = Get-MgContext -ErrorAction SilentlyContinue
-    if (-not $ctx) {
-        Connect-MgGraph -Scopes "Policy.Read.All","Policy.ReadWrite.ConditionalAccess"
+# -----------------------------
+# Ensure Graph Connection
+# -----------------------------
+$requiredScopes = @("Policy.ReadWrite.ConditionalAccess")
+
+if (-not (Get-MgContext)) {
+    Write-Host "Connecting to Microsoft Graph..."
+    Connect-MgGraph -Scopes $requiredScopes
+}
+
+# -----------------------------
+# Load Config
+# -----------------------------
+if (-not (Test-Path $ConfigPath)) {
+    throw "Config file not found: $ConfigPath"
+}
+
+$config = Get-Content $ConfigPath -Raw | ConvertFrom-Json
+
+# -----------------------------
+# Get Existing Locations
+# -----------------------------
+$existing = Get-MgIdentityConditionalAccessNamedLocation -All
+
+# -----------------------------
+# Create IP-Based Locations
+# -----------------------------
+foreach ($loc in $config.ipLocations) {
+
+    if ($existing.DisplayName -contains $loc.name) {
+        Write-Host "Skipping existing IP location: $($loc.name)"
+        continue
     }
-}
 
-function Get-NamedLocation {
-    param($Name)
-    Get-MgIdentityConditionalAccessNamedLocation -All |
-        Where-Object { $_.DisplayName -eq $Name } |
-        Select-Object -First 1
-}
+    Write-Host "Creating IP location: $($loc.name)"
 
-function Convert-IpRanges {
-    param($Ranges)
-
-    $output = @()
-
-    foreach ($r in $Ranges) {
-        if ($r -match ":") {
-            $output += @{
-                "@odata.type" = "#microsoft.graph.iPv6CidrRange"
-                cidrAddress   = $r
-            }
-        }
-        else {
-            $output += @{
-                "@odata.type" = "#microsoft.graph.iPv4CidrRange"
-                cidrAddress   = $r
-            }
-        }
-    }
-
-    return $output
-}
-
-Connect-Graph
-
-$existing = Get-NamedLocation -Name $DisplayName
-
-if ($LocationType -eq "IP") {
     $body = @{
         "@odata.type" = "#microsoft.graph.ipNamedLocation"
-        displayName   = $DisplayName
-        isTrusted     = $IsTrusted
-        ipRanges      = @(Convert-IpRanges -Ranges $IpRanges)
+        displayName   = $loc.name
+        isTrusted     = $loc.isTrusted
+        ipRanges      = @()
     }
-}
-else {
-    $body = @{
-        "@odata.type"                     = "#microsoft.graph.countryNamedLocation"
-        displayName                       = $DisplayName
-        countriesAndRegions               = $CountriesAndRegions
-        includeUnknownCountriesAndRegions = $IncludeUnknownCountriesAndRegions
-    }
-}
 
-if ($existing -and $UpdateIfExists) {
-    Write-Host "Updating existing named location..."
-    Update-MgIdentityConditionalAccessNamedLocation `
-        -NamedLocationId $existing.Id `
-        -BodyParameter $body
-}
-elseif (-not $existing) {
-    Write-Host "Creating new named location..."
+    foreach ($ip in $loc.ipRanges) {
+        $body.ipRanges += @{
+            "@odata.type" = "#microsoft.graph.iPv4CidrRange"
+            cidrAddress   = $ip
+        }
+    }
+
     New-MgIdentityConditionalAccessNamedLocation -BodyParameter $body
 }
-else {
-    Write-Host "Named location exists and update disabled."
+
+# -----------------------------
+# Create Geo-Based Locations
+# -----------------------------
+foreach ($geo in $config.geoLocations) {
+
+    if ($existing.DisplayName -contains $geo.name) {
+        Write-Host "Skipping existing geo location: $($geo.name)"
+        continue
+    }
+
+    Write-Host "Creating Geo location: $($geo.name)"
+
+    $body = @{
+        "@odata.type"  = "#microsoft.graph.countryNamedLocation"
+        displayName    = $geo.name
+        countriesAndRegions = $geo.countries
+        includeUnknownCountriesAndRegions = $false
+    }
+
+    New-MgIdentityConditionalAccessNamedLocation -BodyParameter $body
 }
+
+Write-Host "Named location deployment complete."
