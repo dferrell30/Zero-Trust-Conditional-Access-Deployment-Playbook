@@ -47,3 +47,24 @@ Legacy authentication is frequently targeted because it cannot enforce many mode
 - `deploy.ps1` — deploy this specific policy
 - `implementation.md` — portal and deployment guidance
 - `testing.md` — validation and test steps
+
+## ⚠️ Break-Glass Account Requirement
+
+This policy **does not include break-glass exclusions by default** in the starter configuration.
+
+Before enabling in production:
+
+* Add emergency access account exclusions
+* Validate admin access scenarios
+* Confirm no lockout risk
+
+Example:
+
+```json
+"excludeUsers": [
+  "<BREAK_GLASS_OBJECT_ID>"
+]
+```
+
+Replace with a real object ID before enforcement.
+
