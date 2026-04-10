@@ -1,0 +1,29 @@
+{
+  "ipLocations": [
+    {
+      "name": "ZTCA - Trusted HQ",
+      "isTrusted": true,
+      "ipRanges": [
+        "52.183.10.25/32",
+        "40.112.0.0/16"
+      ]
+    },
+    {
+      "name": "ZTCA - Trusted VPN",
+      "isTrusted": true,
+      "ipRanges": [
+        "20.10.10.10/32"
+      ]
+    }
+  ],
+  "geoLocations": [
+    {
+      "name": "ZTCA - Blocked Countries",
+      "countries": [
+        "RU",
+        "KP"
+      ],
+      "includeUnknownCountriesAndRegions": false
+    }
+  ]
+}
