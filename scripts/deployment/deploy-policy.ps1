@@ -1,4 +1,3 @@
-```powershell
 <#
 .SYNOPSIS
 Deploys (create/update) a Conditional Access policy from JSON.
@@ -18,9 +17,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# -----------------------------
-# Graph Connection
-# -----------------------------
 function Ensure-GraphReady {
     Import-Module Microsoft.Graph.Identity.SignIns -ErrorAction Stop
 
@@ -31,23 +27,64 @@ function Ensure-GraphReady {
         "Application.Read.All"
     )
 
-    if (-not (Get-MgContext)) {
+    $ctx = Get-MgContext -ErrorAction SilentlyContinue
+    if (-not $ctx) {
+        Connect-MgGraph -Scopes $scopes -NoWelcome | Out-Null
+        return
+    }
+
+    $missingScopes = @()
+    foreach ($scope in $scopes) {
+        if ($ctx.Scopes -notcontains $scope) {
+            $missingScopes += $scope
+        }
+    }
+
+    if ($missingScopes.Count -gt 0) {
         Connect-MgGraph -Scopes $scopes -NoWelcome | Out-Null
     }
 }
 
-# -----------------------------
-# Convert JSON → Hashtable
-# -----------------------------
+function Resolve-RepoRelativePath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PathValue
+    )
+
+    if ([System.IO.Path]::IsPathRooted($PathValue)) {
+        if (-not (Test-Path $PathValue)) {
+            throw "JSON file not found: $PathValue"
+        }
+        return (Resolve-Path -Path $PathValue).Path
+    }
+
+    $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+    $combined = Join-Path $repoRoot $PathValue
+
+    if (-not (Test-Path $combined)) {
+        throw "JSON file not found: $combined"
+    }
+
+    return (Resolve-Path -Path $combined).Path
+}
+
 function ConvertTo-HashtableRecursive {
     param($InputObject)
 
     if ($null -eq $InputObject) { return $null }
 
+    if ($InputObject -is [System.Collections.IDictionary]) {
+        $hash = @{}
+        foreach ($key in $InputObject.Keys) {
+            $hash[$key] = ConvertTo-HashtableRecursive -InputObject $InputObject[$key]
+        }
+        return $hash
+    }
+
     if ($InputObject -is [System.Management.Automation.PSCustomObject]) {
         $hash = @{}
         foreach ($prop in $InputObject.PSObject.Properties) {
-            $hash[$prop.Name] = ConvertTo-HashtableRecursive $prop.Value
+            $hash[$prop.Name] = ConvertTo-HashtableRecursive -InputObject $prop.Value
         }
         return $hash
     }
@@ -55,7 +92,7 @@ function ConvertTo-HashtableRecursive {
     if ($InputObject -is [System.Collections.IEnumerable] -and $InputObject -isnot [string]) {
         $array = @()
         foreach ($item in $InputObject) {
-            $array += ,(ConvertTo-HashtableRecursive $item)
+            $array += ,(ConvertTo-HashtableRecursive -InputObject $item)
         }
         return $array
     }
@@ -63,26 +100,26 @@ function ConvertTo-HashtableRecursive {
     return $InputObject
 }
 
-# -----------------------------
-# Resolve Named Locations
-# -----------------------------
 function Resolve-NamedLocations {
     param(
         [hashtable]$Body,
         [array]$Locations
     )
 
-    if (-not $Body.conditions.locations) { return $Body }
+    if (-not $Body.ContainsKey("conditions")) { return $Body }
+    if (-not $Body.conditions.ContainsKey("locations")) { return $Body }
 
     foreach ($type in @("includeLocations", "excludeLocations")) {
         if ($Body.conditions.locations.$type) {
             $resolved = @()
 
             foreach ($loc in $Body.conditions.locations.$type) {
-
-                if ($loc -like "NAME:*") {
+                if ($loc -eq "All" -or $loc -eq "AllTrusted") {
+                    $resolved += $loc
+                }
+                elseif ($loc -like "NAME:*") {
                     $name = $loc.Substring(5)
-                    $match = $Locations | Where-Object { $_.DisplayName -eq $name }
+                    $match = $Locations | Where-Object { $_.DisplayName -eq $name } | Select-Object -First 1
 
                     if (-not $match) {
                         throw "Named location not found: $name"
@@ -102,16 +139,13 @@ function Resolve-NamedLocations {
     return $Body
 }
 
-# -----------------------------
-# MAIN
-# -----------------------------
 Ensure-GraphReady
 
-$path = Resolve-Path $JsonPath
+$path = Resolve-RepoRelativePath -PathValue $JsonPath
 Write-Host "Using: $path"
 
 $json = Get-Content $path -Raw | ConvertFrom-Json -Depth 100
-$body = ConvertTo-HashtableRecursive $json
+$body = ConvertTo-HashtableRecursive -InputObject $json
 
 $locations = Get-MgIdentityConditionalAccessNamedLocation -All
 $body = Resolve-NamedLocations -Body $body -Locations $locations
@@ -122,11 +156,9 @@ if (-not $body.displayName) {
 
 Write-Host "Processing policy: $($body.displayName)"
 
-# -----------------------------
-# Check Existing Policy
-# -----------------------------
 $existing = Get-MgIdentityConditionalAccessPolicy -All |
-    Where-Object { $_.DisplayName -eq $body.displayName }
+    Where-Object { $_.DisplayName -eq $body.displayName } |
+    Select-Object -First 1
 
 try {
     if ($existing) {
@@ -153,4 +185,3 @@ catch {
     Write-Host "FAILED: $($body.displayName)" -ForegroundColor Red
     throw
 }
-```
