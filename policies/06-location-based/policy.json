@@ -1,22 +1,35 @@
 {
-  "ipLocations": [
-    {
-      "name": "ZTCA - Trusted HQ",
-      "isTrusted": true,
-      "ipRanges": [
-        "52.183.10.25/32",
-        "40.112.0.0/16"
+  "displayName": "ZTCA - Block Untrusted Locations",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": [
+        "All"
       ]
-    }
-  ],
-  "geoLocations": [
-    {
-      "name": "ZTCA - Blocked Countries",
-      "countries": [
-        "RU",
-        "CN",
-        "KP"
+    },
+    "applications": {
+      "includeApplications": [
+        "All"
       ]
-    }
-  ]
+    },
+    "locations": {
+      "includeLocations": [
+        "All"
+      ],
+      "excludeLocations": [
+        "NAME:ZTCA - Trusted HQ",
+        "NAME:ZTCA - Trusted VPN"
+      ]
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": [
+      "block"
+    ]
+  }
 }
