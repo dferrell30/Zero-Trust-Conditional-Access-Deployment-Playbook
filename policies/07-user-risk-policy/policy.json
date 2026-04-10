@@ -3,22 +3,17 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": [
-        "All"
-      ]
+      "includeUsers": ["All"]
     },
-    "userRiskLevels": [
-      "high"
-    ],
+    "userRiskLevels": ["high"],
     "applications": {
-      "includeApplications": [
-        "All"
-      ]
+      "includeApplications": ["All"]
     }
   },
   "grantControls": {
-    "operator": "OR",
+    "operator": "AND",
     "builtInControls": [
+      "mfa",
       "passwordChange"
     ]
   }
