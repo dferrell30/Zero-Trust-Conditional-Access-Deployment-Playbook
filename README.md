@@ -217,7 +217,7 @@ images/         → Diagrams and visuals
 
 ## 🚦 Recommended Rollout Strategy
 
-Do not deploy Conditional Access broadly without staged validation.
+### Do not deploy Conditional Access broadly without staged validation. See the README in the scripts folder for full details on how to prepare and deploy via PowerShell/JSON.
 
 Recommended order:
 
