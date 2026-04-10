@@ -13,6 +13,32 @@ It includes:
 
 ---
 
+## 🚀 Start Here
+
+If this is your first time:
+
+1. Download or clone the repo
+2. Open PowerShell in the repo root
+3. Run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\deployment\install-prereqs.ps1
+```
+
+4. Deploy one policy:
+
+```powershell
+.\scripts\deployment\deploy-policy.ps1 -JsonPath ".\policies\01-require-mfa\policy.json"
+```
+
+5. Validate using:
+
+```text
+docs/validation-playbook.md
+```
+---
+
 ## 🧱 Architecture
 
 ```text
@@ -63,20 +89,23 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 ---
 
-## 🧪 Validation
+# 🧪 Validation Playbook (Required Step)
 
-👉 See full guide:
+⚠️ **This step is mandatory before enabling any Conditional Access policy.**
 
-```text
+All policies must be:
+
+* Tested in report-only mode
+* Validated using sign-in logs
+* Reviewed for unintended impact
+
+Failure to validate can result in:
+
+* Admin lockout
+* Service disruption
+* User access issues
+
 docs/validation-playbook.md
-```
-
-Validation includes:
-
-* Sign-in log analysis
-* Risk simulation
-* Report-only verification
-* Enforcement readiness checks
 
 ---
 
