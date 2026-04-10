@@ -116,3 +116,80 @@ User risk represents the likelihood that a user account is compromised based on 
 * [ ] No unexpected impact
 * [ ] Break-glass account excluded
 
+---
+
+## 🧪 Risk Simulation (PowerShell + Manual)
+
+Microsoft does not currently provide a direct API to simulate user or sign-in risk.
+
+Testing must be performed using a combination of:
+
+* Manual risk simulation (recommended)
+* PowerShell validation of results
+
+---
+
+## 🪜 Option 1 — Simulate User Risk (Recommended)
+
+1. Go to:
+
+   * Entra ID → Protection → **Identity Protection**
+2. Select:
+
+   * **Risky users**
+3. Choose a test user
+4. Click:
+
+   * **Confirm user compromised**
+
+This will trigger:
+
+* User Risk = High
+* Conditional Access policy evaluation
+
+---
+
+## 🪜 Option 2 — Generate Risk Signals (Advanced)
+
+Use controlled test scenarios:
+
+* Sign in from multiple geographic locations
+* Use VPN from different regions
+* Use different devices and browsers
+
+---
+
+## 🔍 Validate Using PowerShell
+
+Run:
+
+```powershell id="riskps1"
+Get-MgAuditLogSignIn -Top 10 | Select-Object UserPrincipalName, RiskLevelDuringSignIn, RiskState, ConditionalAccessStatus
+```
+
+---
+
+## 🎯 What to Look For
+
+* RiskLevelDuringSignIn = medium/high
+* ConditionalAccessStatus = success/failure
+* Policy applied in report-only
+
+---
+
+## ⚠️ Limitations
+
+* Risk detection is not immediate
+* Depends on Microsoft threat intelligence
+* Not all test activity will trigger risk
+
+---
+
+## 💡 Recommendation
+
+Use:
+
+* Manual simulation for validation
+* PowerShell for verification
+
+
