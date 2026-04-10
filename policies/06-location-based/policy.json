@@ -1,21 +1,31 @@
 {
-  "displayName": "ZTCA - Location-Based Access",
+  "displayName": "ZTCA - Block Untrusted Locations",
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": ["All"],
-      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+      "includeUsers": [
+        "All"
+      ]
     },
     "applications": {
-      "includeApplications": ["Office365"]
+      "includeApplications": [
+        "All"
+      ]
     },
     "locations": {
-      "includeLocations": ["All"],
-      "excludeLocations": ["<TRUSTED_LOCATION_ID>"]
-    }
+      "includeLocations": [
+        "All"
+      ]
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
   },
   "grantControls": {
     "operator": "OR",
-    "builtInControls": ["mfa"]
+    "builtInControls": [
+      "block"
+    ]
   }
 }
