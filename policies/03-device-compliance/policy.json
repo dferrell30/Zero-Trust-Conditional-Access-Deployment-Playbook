@@ -3,10 +3,14 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": ["All"]
+      "includeUsers": [
+        "All"
+      ]
     },
     "applications": {
-      "includeApplications": ["Office365"]
+      "includeApplications": [
+        "Office365"
+      ]
     },
     "clientAppTypes": [
       "browser",
