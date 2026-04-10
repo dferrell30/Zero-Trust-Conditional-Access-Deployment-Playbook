@@ -83,6 +83,13 @@ Get-ChildItem -Recurse | Unblock-File
 
 This reduces the need to run the temporary bypass each time.
 
+## One-command deployment
+
+You can run the full deployment automatically with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
+
 ### Enterprise option
 
 For managed environments, consider code-signing the scripts or deploying through CI/CD instead of relying on local execution.
