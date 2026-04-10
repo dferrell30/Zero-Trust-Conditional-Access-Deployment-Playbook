@@ -1,7 +1,13 @@
+```powershell
 <#
 .SYNOPSIS
-Deploys a single Microsoft Entra Conditional Access policy from a JSON file.
-Automatically resolves named locations referenced as NAME:<displayName>.
+Deploys (create/update) a Conditional Access policy from JSON.
+
+.DESCRIPTION
+- Resolves named locations by NAME:<displayName>
+- Converts JSON to proper Graph format
+- Creates policy if not exists
+- Updates policy if it already exists
 #>
 
 [CmdletBinding()]
@@ -12,78 +18,36 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# -----------------------------
+# Graph Connection
+# -----------------------------
 function Ensure-GraphReady {
-    if (-not (Get-Module -ListAvailable -Name Microsoft.Graph)) {
-        throw "Microsoft.Graph is not installed. Run .\scripts\deployment\install-prereqs.ps1 first."
-    }
-
     Import-Module Microsoft.Graph.Identity.SignIns -ErrorAction Stop
 
-    $requiredScopes = @(
+    $scopes = @(
         "Policy.ReadWrite.ConditionalAccess",
+        "Policy.Read.All",
         "Directory.Read.All",
-        "Application.Read.All",
-        "Policy.Read.All"
+        "Application.Read.All"
     )
 
-    $ctx = Get-MgContext -ErrorAction SilentlyContinue
-
-    if (-not $ctx) {
-        Write-Host "Not connected to Microsoft Graph. Connecting now..."
-        Connect-MgGraph -Scopes $requiredScopes -NoWelcome | Out-Null
-        $ctx = Get-MgContext
-    }
-
-    $missingScopes = @()
-    foreach ($scope in $requiredScopes) {
-        if ($ctx.Scopes -notcontains $scope) {
-            $missingScopes += $scope
-        }
-    }
-
-    if ($missingScopes.Count -gt 0) {
-        Write-Host "Current Graph session is missing required scopes. Reconnecting..."
-        Connect-MgGraph -Scopes $requiredScopes -NoWelcome | Out-Null
+    if (-not (Get-MgContext)) {
+        Connect-MgGraph -Scopes $scopes -NoWelcome | Out-Null
     }
 }
 
-function Resolve-RepoRelativePath {
-    param([string]$PathValue)
-
-    if ([System.IO.Path]::IsPathRooted($PathValue)) {
-        if (-not (Test-Path $PathValue)) {
-            throw "JSON file not found: $PathValue"
-        }
-        return (Resolve-Path -Path $PathValue).Path
-    }
-
-    $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
-    $combined = Join-Path $repoRoot $PathValue
-
-    if (-not (Test-Path $combined)) {
-        throw "JSON file not found: $combined"
-    }
-
-    return (Resolve-Path -Path $combined).Path
-}
-
+# -----------------------------
+# Convert JSON → Hashtable
+# -----------------------------
 function ConvertTo-HashtableRecursive {
     param($InputObject)
 
     if ($null -eq $InputObject) { return $null }
 
-    if ($InputObject -is [System.Collections.IDictionary]) {
-        $hash = @{}
-        foreach ($key in $InputObject.Keys) {
-            $hash[$key] = ConvertTo-HashtableRecursive -InputObject $InputObject[$key]
-        }
-        return $hash
-    }
-
     if ($InputObject -is [System.Management.Automation.PSCustomObject]) {
         $hash = @{}
         foreach ($prop in $InputObject.PSObject.Properties) {
-            $hash[$prop.Name] = ConvertTo-HashtableRecursive -InputObject $prop.Value
+            $hash[$prop.Name] = ConvertTo-HashtableRecursive $prop.Value
         }
         return $hash
     }
@@ -91,7 +55,7 @@ function ConvertTo-HashtableRecursive {
     if ($InputObject -is [System.Collections.IEnumerable] -and $InputObject -isnot [string]) {
         $array = @()
         foreach ($item in $InputObject) {
-            $array += ,(ConvertTo-HashtableRecursive -InputObject $item)
+            $array += ,(ConvertTo-HashtableRecursive $item)
         }
         return $array
     }
@@ -99,83 +63,94 @@ function ConvertTo-HashtableRecursive {
     return $InputObject
 }
 
-function Resolve-NamedLocationReference {
+# -----------------------------
+# Resolve Named Locations
+# -----------------------------
+function Resolve-NamedLocations {
     param(
-        [string]$Value,
-        [array]$AllNamedLocations
+        [hashtable]$Body,
+        [array]$Locations
     )
 
-    if ($Value -eq "All" -or $Value -eq "AllTrusted") {
-        return $Value
-    }
+    if (-not $Body.conditions.locations) { return $Body }
 
-    if ($Value -like "NAME:*") {
-        $displayName = $Value.Substring(5)
-        $match = $AllNamedLocations | Where-Object { $_.DisplayName -eq $displayName } | Select-Object -First 1
+    foreach ($type in @("includeLocations", "excludeLocations")) {
+        if ($Body.conditions.locations.$type) {
+            $resolved = @()
 
-        if (-not $match) {
-            throw "Named location not found: $displayName"
+            foreach ($loc in $Body.conditions.locations.$type) {
+
+                if ($loc -like "NAME:*") {
+                    $name = $loc.Substring(5)
+                    $match = $Locations | Where-Object { $_.DisplayName -eq $name }
+
+                    if (-not $match) {
+                        throw "Named location not found: $name"
+                    }
+
+                    $resolved += $match.Id
+                }
+                else {
+                    $resolved += $loc
+                }
+            }
+
+            $Body.conditions.locations.$type = $resolved
         }
-
-        return $match.Id
     }
 
-    return $Value
+    return $Body
 }
 
-function Resolve-LocationReferencesInPolicy {
-    param(
-        [hashtable]$PolicyBody,
-        [array]$AllNamedLocations
-    )
-
-    if (-not $PolicyBody.ContainsKey("conditions")) { return $PolicyBody }
-    if (-not $PolicyBody.conditions.ContainsKey("locations")) { return $PolicyBody }
-
-    if ($PolicyBody.conditions.locations.ContainsKey("includeLocations")) {
-        $resolved = @()
-        foreach ($loc in $PolicyBody.conditions.locations.includeLocations) {
-            $resolved += (Resolve-NamedLocationReference -Value $loc -AllNamedLocations $AllNamedLocations)
-        }
-        $PolicyBody.conditions.locations.includeLocations = $resolved
-    }
-
-    if ($PolicyBody.conditions.locations.ContainsKey("excludeLocations")) {
-        $resolved = @()
-        foreach ($loc in $PolicyBody.conditions.locations.excludeLocations) {
-            $resolved += (Resolve-NamedLocationReference -Value $loc -AllNamedLocations $AllNamedLocations)
-        }
-        $PolicyBody.conditions.locations.excludeLocations = $resolved
-    }
-
-    return $PolicyBody
-}
-
+# -----------------------------
+# MAIN
+# -----------------------------
 Ensure-GraphReady
 
-$resolvedJsonPath = Resolve-RepoRelativePath -PathValue $JsonPath
-Write-Host "Using JSON file: $resolvedJsonPath"
+$path = Resolve-Path $JsonPath
+Write-Host "Using: $path"
 
-$rawJson = Get-Content -Path $resolvedJsonPath -Raw
-$policyObject = $rawJson | ConvertFrom-Json -Depth 100
-$body = ConvertTo-HashtableRecursive -InputObject $policyObject
+$json = Get-Content $path -Raw | ConvertFrom-Json -Depth 100
+$body = ConvertTo-HashtableRecursive $json
 
-$namedLocations = Get-MgIdentityConditionalAccessNamedLocation -All
-$body = Resolve-LocationReferencesInPolicy -PolicyBody $body -AllNamedLocations $namedLocations
+$locations = Get-MgIdentityConditionalAccessNamedLocation -All
+$body = Resolve-NamedLocations -Body $body -Locations $locations
 
 if (-not $body.displayName) {
-    throw "JSON file is missing displayName."
+    throw "displayName is required"
 }
 
-Write-Host "Creating policy: $($body.displayName)"
+Write-Host "Processing policy: $($body.displayName)"
+
+# -----------------------------
+# Check Existing Policy
+# -----------------------------
+$existing = Get-MgIdentityConditionalAccessPolicy -All |
+    Where-Object { $_.DisplayName -eq $body.displayName }
 
 try {
-    $result = New-MgIdentityConditionalAccessPolicy -BodyParameter $body -ErrorAction Stop
-    Write-Host "Policy created successfully."
-    Write-Host "Display Name: $($result.DisplayName)"
-    Write-Host "Policy ID:    $($result.Id)"
+    if ($existing) {
+        Write-Host "Updating existing policy..."
+
+        Update-MgIdentityConditionalAccessPolicy `
+            -ConditionalAccessPolicyId $existing.Id `
+            -BodyParameter $body `
+            -ErrorAction Stop
+
+        Write-Host "Updated: $($body.displayName)"
+    }
+    else {
+        Write-Host "Creating new policy..."
+
+        $result = New-MgIdentityConditionalAccessPolicy `
+            -BodyParameter $body `
+            -ErrorAction Stop
+
+        Write-Host "Created: $($result.DisplayName)"
+    }
 }
 catch {
-    Write-Host "Policy creation failed." -ForegroundColor Red
+    Write-Host "FAILED: $($body.displayName)" -ForegroundColor Red
     throw
 }
+```
