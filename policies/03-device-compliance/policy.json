@@ -3,18 +3,20 @@
   "state": "enabledForReportingButNotEnforced",
   "conditions": {
     "users": {
-      "includeUsers": ["All"],
-      "excludeUsers": ["<BREAK_GLASS_OBJECT_ID>"]
+      "includeUsers": ["All"]
     },
     "applications": {
       "includeApplications": ["Office365"]
-    }
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ]
   },
   "grantControls": {
     "operator": "OR",
     "builtInControls": [
-      "compliantDevice",
-      "domainJoinedDevice"
+      "compliantDevice"
     ]
   }
 }
