@@ -1,11 +1,6 @@
 <#
 .SYNOPSIS
-Deploys all Conditional Access policy JSON files in the repo.
-
-.DESCRIPTION
-- Finds every policy.json under .\policies
-- Deploys them one at a time
-- Continues through the list and summarizes failures
+Creates/updates named locations, then deploys all Conditional Access policies.
 #>
 
 [CmdletBinding()]
@@ -16,14 +11,21 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $policiesRoot = Join-Path $repoRoot "policies"
 $deployScript = Join-Path $PSScriptRoot "deploy-policy.ps1"
-
-if (-not (Test-Path $policiesRoot)) {
-    throw "Policies folder not found: $policiesRoot"
-}
+$namedLocationScript = Join-Path $repoRoot "scripts\named-locations\create-named-locations.ps1"
 
 if (-not (Test-Path $deployScript)) {
     throw "deploy-policy.ps1 not found: $deployScript"
 }
+
+if (-not (Test-Path $namedLocationScript)) {
+    throw "Named location script not found: $namedLocationScript"
+}
+
+Write-Host "Step 1: Syncing named locations..."
+& $namedLocationScript
+
+Write-Host ""
+Write-Host "Step 2: Deploying Conditional Access policies..."
 
 $jsonFiles = Get-ChildItem -Path $policiesRoot -Filter "policy.json" -Recurse -File | Sort-Object FullName
 
@@ -32,8 +34,6 @@ if (-not $jsonFiles -or $jsonFiles.Count -eq 0) {
 }
 
 $failures = @()
-
-Write-Host "Found $($jsonFiles.Count) policy file(s)."
 
 foreach ($file in $jsonFiles) {
     Write-Host ""
