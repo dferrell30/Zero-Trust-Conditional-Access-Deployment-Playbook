@@ -200,6 +200,12 @@ With this playbook:
 
 Provide a **repeatable, auditable, and scalable** Conditional Access deployment model.
 
+## 🧠 Why This Exists
+
+Most environments enable MFA but still remain exposed.
+
+This project focuses on closing those gaps by implementing layered Conditional Access controls aligned with Zero Trust.
+
 ---
 
 ## 🔁 Safe to Re-Run
