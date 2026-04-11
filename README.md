@@ -35,6 +35,17 @@ Included in this repository:
 
 ---
 
+## 📚 Table of Contents
+
+- [Quick Start](#-quick-start)
+- [Overview](#-overview)
+- [Core Policies](#-core-policies-entra-p1)
+- [Identity Protection](#-identity-protection-entra-p2)
+- [Execution](#-execution)
+- [Validation](#-validation)
+
+---
+
 ## 👥 Who This Is For
 
 * Microsoft Entra administrators
