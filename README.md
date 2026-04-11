@@ -6,6 +6,8 @@
 ![PowerShell](https://img.shields.io/badge/Automation-PowerShell-5391FE?style=for-the-badge)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
+> A practical, deployable Zero Trust Conditional Access baseline.
+
 ## ⚡ Quick Start
 
 Run the bootstrapper to install prerequisites, connect to Microsoft Graph, create named locations, deploy policies, and verify results.
