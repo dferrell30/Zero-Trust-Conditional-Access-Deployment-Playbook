@@ -1,5 +1,20 @@
 # 🔐 Zero Trust Conditional Access Playbook
 
+## 🚀 Quick Start (Recommended)
+
+```powershell
+cd "C:\Path\To\Zero-Trust-Conditional-Access-Playbook"
+pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
+```
+
+This runs the full deployment automatically:
+
+* installs prerequisites
+* connects to Microsoft Graph
+* creates named locations
+* deploys all policies
+* verifies results
+
 ## 🎯 Overview
 
 This repository provides a **policy-as-code implementation** of Microsoft Entra Conditional Access aligned to **Zero Trust principles**.
