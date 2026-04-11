@@ -14,6 +14,13 @@ Example IP ranges shown in documentation are:
 * NOT routable
 * NOT valid for production use
 
+Replace placeholder values with your real IP ranges.
+
+If left empty:
+
+* trusted locations will not be configured
+* location-based policies may block all users when enforced
+
 ---
 
 ## 🛠️ What You Must Do
