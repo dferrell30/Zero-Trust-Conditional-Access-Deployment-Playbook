@@ -8,42 +8,52 @@ It includes:
 
 * Conditional Access policy JSON definitions
 * PowerShell deployment scripts
-* Step-by-step deployment guidance
+* Automated named location creation
 * Testing and validation procedures
+* A one-command bootstrap deployment method
 
 ---
 
 ## 🚀 Start Here
 
-If this is your first time:
+The **recommended way** to run this repository is with the **bootstrapper**.
 
-1. Download or clone the repo
-2. Open PowerShell in the repo root
-3. Run:
+The bootstrapper:
+
+* unblocks downloaded files
+* installs prerequisites
+* connects to Microsoft Graph
+* creates or updates named locations
+* deploys all Conditional Access policies
+* verifies deployed policies
+
+---
+
+## 🪜 Quick Start
+
+### Step 1 — Open PowerShell
+
+Open PowerShell and change to the local repository folder.
+
+Example:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\deployment\install-prereqs.ps1
+cd "C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main"
 ```
 
-4. Deploy one policy:
+### Step 2 — Run the bootstrapper with PowerShell 7
 
 ```powershell
-.\scripts\deployment\deploy-policy.ps1 -JsonPath ".\policies\01-require-mfa\policy.json"
+pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
 ```
 
-5. Validate using:
-
-```text
-docs/validation-playbook.md
-```
 ---
 
 ## 🧱 Architecture
 
 ```text
 policies/     → Conditional Access policies (JSON + docs)
-scripts/      → Deployment and export scripts
+scripts/      → Deployment, bootstrap, and export scripts
 docs/         → Validation and implementation guides
 images/       → Screenshots and diagrams
 ```
@@ -72,40 +82,37 @@ images/       → Screenshots and diagrams
 
 ---
 
-## 🚀 Deployment
+## ⚙️ Recommended Execution Method
 
-See:
-
-👉 `scripts/README.md`
-
-Key flow:
+Use the bootstrapper as the **primary execution method**:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\deployment\install-prereqs.ps1
-.\scripts\deployment\deploy-policy.ps1 -JsonPath ".\policies\01-require-mfa\policy.json"
-.\scripts\deployment\deploy-policies-bulk.ps1
+cd "C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main"
+pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
+```
+
+For detailed script usage, see:
+
+```text
+scripts/README.md
 ```
 
 ---
 
-# 🧪 Validation Playbook (Required Step)
+## 🧪 Validation
 
-⚠️ **This step is mandatory before enabling any Conditional Access policy.**
+Use the validation guide after deployment:
 
-All policies must be:
-
-* Tested in report-only mode
-* Validated using sign-in logs
-* Reviewed for unintended impact
-
-Failure to validate can result in:
-
-* Admin lockout
-* Service disruption
-* User access issues
-
+```text
 docs/validation-playbook.md
+```
+
+Validation includes:
+
+* Sign-in log analysis
+* Risk simulation
+* Report-only verification
+* Enforcement readiness checks
 
 ---
 
@@ -124,48 +131,21 @@ Before enabling policies:
 
 This repo enforces:
 
-* Verify explicitly (MFA, risk-based)
-* Use least privilege (role-based protection)
-* Assume breach (risk policies)
+* Verify explicitly
+* Use least privilege
+* Assume breach
 
+---
+
+## 📌 Status
+
+* ✅ MVP Complete
+* ✅ Bootstrap Automation Working
+* ✅ Validation Ready
+* ⚠️ Requires production hardening before enforcement
 
 ---
 
 ## 🎯 Goal
 
 Provide a **repeatable, auditable, and scalable** Conditional Access deployment model.
-
-
----
-
-## ⚠️ Disclaimer
-
-This data and scripts are provided for **educational, testing, and security validation purposes only**.
-
-Use of this tool should be limited to:
-- Authorized environments  
-- Lab or approved enterprise systems  
-
-The author assumes **no liability or responsibility** for:
-- Misuse of this tool  
-- Damage to systems  
-- Unauthorized or improper use  
-
-By using this data and scripts, you agree to use it in a lawful and responsible manner.
----
-
-This project is not affiliated with or endorsed by Microsoft.
----
-
-
-## ⚖️ Professional Disclaimer
-
-This project is an independent work developed in a personal capacity.
-
-The views, opinions, code, and content expressed in this repository are solely my own and do not reflect the views, policies, or positions of any current or future employer, client, or affiliated organization.
-
-No employer, past, present, or future, has reviewed, approved, endorsed, or is in any way associated with these works.
-
-This project was developed outside the scope of any employment and without the use of proprietary, confidential, or restricted resources.
-
-All code/language in this repository is provided under the terms of the included MIT License.
