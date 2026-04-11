@@ -10,6 +10,18 @@ It ensures:
 * No unintended access issues occur
 * Safe transition from report-only to enforcement
 
+## Before You Validate
+
+Run deployment using the bootstrapper:
+
+```powershell
+cd "C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main"
+pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
+```
+
+Then validate policies in report-only mode.
+
+
 ---
 
 # 🧭 Validation Phases
