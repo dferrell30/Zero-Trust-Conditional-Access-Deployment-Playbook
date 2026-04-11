@@ -164,3 +164,16 @@ This repo enforces:
 ## 🎯 Goal
 
 Provide a **repeatable, auditable, and scalable** Conditional Access deployment model.
+
+## 🔁 Safe to Re-Run
+
+This deployment is **idempotent**.
+
+You can safely run the bootstrapper multiple times:
+
+```powershell
+pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
+```
+
+Existing policies and named locations will be updated instead of duplicated.
+
