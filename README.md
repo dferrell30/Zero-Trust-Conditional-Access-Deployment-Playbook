@@ -1,303 +1,132 @@
 # 🔐 Zero Trust Conditional Access Playbook
 
-## 🚀 Quick Start (Recommended)
+## ⚡ Quick Start (Recommended)
 
 ```powershell
 cd "C:\Path\To\Zero-Trust-Conditional-Access-Playbook"
 pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
-```
 
 This runs the full deployment automatically:
 
-* installs prerequisites
-* connects to Microsoft Graph
-* creates named locations
-* deploys all policies
-* verifies results
+installs prerequisites
+connects to Microsoft Graph
+creates named locations
+deploys all policies
+verifies results
+🎯 Overview
 
-## 🎯 Overview
+This repository provides a policy-as-code implementation of Microsoft Entra Conditional Access aligned to Zero Trust principles.
 
-This repository provides a **policy-as-code implementation** of Microsoft Entra Conditional Access aligned to **Zero Trust principles**.
+It is designed to help organizations move from basic MFA enforcement → layered Zero Trust access control.
 
-It includes:
+Included:
 
-* Conditional Access policy JSON definitions
-* PowerShell deployment scripts
-* Automated named location creation
-* Testing and validation procedures
-* A one-command bootstrap deployment method
-
----
-
-## 🚀 Start Here
-
-The **recommended way** to run this repository is with the **bootstrapper**.
-
-The bootstrapper:
-
-* unblocks downloaded files
-* installs prerequisites
-* connects to Microsoft Graph
-* creates or updates named locations
-* deploys all Conditional Access policies
-* verifies deployed policies
-
----
-
-## 🪜 Quick Start
-
-### Step 1 — Open PowerShell
-
-Open PowerShell and change to the local repository folder.
-
-Example:
-
-```powershell
-cd "C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main"
-```
-
-### Step 2 — Run the bootstrapper with PowerShell 7
-
-```powershell
-pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
-```
-
----
-
-## 🧱 Architecture
-
-```text
+Conditional Access policy JSON definitions
+PowerShell deployment scripts
+Automated named location creation
+Testing and validation procedures
+A one-command bootstrap deployment method
+🧱 Architecture
 policies/     → Conditional Access policies (JSON + docs)
-scripts/      → Deployment, bootstrap, and export scripts
+scripts/      → Deployment, bootstrap, and automation
 docs/         → Validation and implementation guides
 images/       → Screenshots and diagrams
-```
+🔐 Core Policies (Entra P1)
+Policy	Purpose
+Require MFA	Enforce MFA across all users
+Block Legacy Auth	Block basic authentication
+Device Compliance	Require compliant devices
+Admin Protection	Stronger controls for admins
+Session Controls	Manage session lifetime
+Location Policy	Restrict risky locations
+🧠 Identity Protection (Entra P2)
+Policy	Purpose
+User Risk Policy	Respond to compromised accounts
+Sign-in Risk Policy	Respond to risky sign-ins
+🧠 Identity Protection — Operational Readiness
 
----
+Risk-based policies are not just configuration—they require investigation and response.
 
-## 🔐 Core Policies (Entra P1)
+🔍 Where to Investigate
+Identity Protection → Risky users
+View users flagged as compromised
+Identity Protection → Risk detections
+Review events like:
+leaked credentials
+impossible travel
+Monitoring → Sign-in logs
+Analyze:
+sign-in risk
+Conditional Access results
+applied policies
+🛠️ Responding to Risk
+User Risk (Compromised Accounts)
+Require password reset
+Require MFA
+Confirm or dismiss risk
+Sign-in Risk
+Require MFA challenge
+Block high-risk attempts
+Investigate:
+location anomalies
+device context
+sign-in patterns
+⚠️ Before Enabling Risk Policies
+Validate policies in report-only mode
+Ensure remediation workflows are understood
+Test with non-production users
+Confirm P2 licensing is available
+🧪 Validation
 
-| Policy            | Purpose                      |
-| ----------------- | ---------------------------- |
-| Require MFA       | Enforce MFA across all users |
-| Block Legacy Auth | Block basic authentication   |
-| Device Compliance | Require compliant devices    |
-| Admin Protection  | Stronger controls for admins |
-| Session Controls  | Manage session lifetime      |
-| Location Policy   | Restrict risky locations     |
+After deployment, validate using:
 
----
-
-## 🧠 Identity Protection (Entra P2)
-
-| Policy              | Purpose                         |
-| ------------------- | ------------------------------- |
-| User Risk Policy    | Respond to compromised accounts |
-| Sign-in Risk Policy | Respond to risky sign-ins       |
-
-## 🧠 Identity Protection — Required Operational Readiness
-
-Before deploying or enabling **User Risk** and **Sign-in Risk** policies, you must understand how to **investigate and remediate risk events**.
-
-These policies rely on Microsoft Entra **Identity Protection** signals and require operational response procedures.
-
----
-
-## 🔍 Where to Investigate Risk
-
-Use the following areas in the Microsoft Entra admin center:
-
-* **Identity Protection → Risky users**
-
-  * View users flagged as potentially compromised
-  * Investigate user-level risk signals
-
-* **Identity Protection → Risk detections**
-
-  * View individual risk events (e.g., leaked credentials, impossible travel)
-
-* **Monitoring → Sign-in logs**
-
-  * Review:
-
-    * Sign-in risk level
-    * Conditional Access results
-    * applied policies
-
----
-
-## 🛠️ How to Remediate User Risk
-
-When a user is flagged as **high risk**:
-
-* Require password reset
-* Require MFA verification
-* Confirm or dismiss the risk in Identity Protection
-
-Example actions:
-
-* **Confirm compromised** → forces remediation
-* **Dismiss risk** → clears false positives
-
----
-
-## 🛠️ How to Respond to Sign-in Risk
-
-When a risky sign-in is detected:
-
-* Require MFA challenge
-* Block access if risk is too high
-* Investigate:
-
-  * location anomalies
-  * unfamiliar sign-in properties
-  * device and client details
-
----
-
-## ⚠️ Important Notes
-
-* Risk signals are generated by Microsoft and may not appear immediately
-* Testing may require manual simulation or controlled scenarios
-* Risk-based policies require **Entra ID P2 licensing**
-
----
-
-## 🚨 Before Enabling Risk Policies
-
-* Ensure administrators understand investigation workflows
-* Validate policies in **report-only mode**
-* Confirm remediation steps are documented
-* Test with non-production accounts
-
----
-
-## 🎯 Recommendation
-
-Treat Identity Protection policies as:
-
-👉 **Operational security controls — not just configuration**
-
-They require:
-
-* monitoring
-* investigation
-* response procedures
-
-
----
-
-## ⚙️ Recommended Execution Method
-
-Use the bootstrapper as the **primary execution method**:
-
-```powershell
-cd "C:\Users\<YourName>\Documents\Github\Zero-Trust-Conditional-Access-Playbook-main"
-pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
-```
-
-For detailed script usage, see:
-
-```text
-scripts/README.md
-```
-
----
-
-## 🧪 Validation
-
-Use the validation guide after deployment:
-
-```text
 docs/validation-playbook.md
-```
 
 Validation includes:
 
-* Sign-in log analysis
-* Risk simulation
-* Report-only verification
-* Enforcement readiness checks
+Sign-in log analysis
+Risk simulation
+Report-only evaluation
+Enforcement readiness
+⚙️ Execution
 
----
+Primary method:
 
-## ⚠️ Safety Requirements
-
-Before enabling policies:
-
-* Add break-glass account exclusions
-* Validate all policies in report-only mode
-* Test admin and service accounts
-* Confirm no lockout scenarios
-
----
-
-## 🔐 Zero Trust Alignment
-
-This repo enforces:
-
-* Verify explicitly
-* Use least privilege
-* Assume breach
-
----
-
-## 📌 Status
-
-* ✅ MVP Complete
-* ✅ Bootstrap Automation Working
-* ✅ Validation Ready
-* ⚠️ Requires production hardening before enforcement
-
----
-
-## 🎯 Goal
-
-Provide a **repeatable, auditable, and scalable** Conditional Access deployment model.
-
-## 🔁 Safe to Re-Run
-
-This deployment is **idempotent**.
-
-You can safely run the bootstrapper multiple times:
-
-```powershell
 pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
-```
 
-Existing policies and named locations will be updated instead of duplicated.
+Additional script usage:
 
----
+scripts/README.md
+⚠️ Safety Requirements
 
-## ⚠️ Disclaimer
+Before enforcing policies:
 
-This tool is provided for **educational, testing, and security validation purposes only**.
+Add break-glass account exclusions
+Test admin/service accounts
+Validate report-only results
+Confirm no lockout scenarios
+🔐 Zero Trust Alignment
 
-Use of this tool should be limited to:
-- Authorized environments  
-- Lab or approved enterprise systems  
+This implementation enforces:
 
-The author assumes **no liability or responsibility** for:
-- Misuse of this tool  
-- Damage to systems  
-- Unauthorized or improper use  
+Verify explicitly
+Use least privilege
+Assume breach
+🧪 Real-World Scenario
 
-By using this tool, you agree to use it in a lawful and responsible manner.
----
+Credential theft attempt from unmanaged device
 
-This project is not affiliated with or endorsed by Microsoft.
----
+Without Conditional Access:
 
+attacker gains access
+session persists
+lateral movement begins
 
-## ⚖️ Professional Disclaimer
+With this playbook:
 
-This project is an independent work developed in a personal capacity.
+MFA is required → attacker challenged
+device compliance enforced → access blocked
+risk policies trigger → session revoked
+session controls limit persistence
 
-The views, opinions, code, and content expressed in this repository are solely my own and do not reflect the views, policies, or positions of any current or future employer, client, or affiliated organization.
-
-No employer, past, present, or future, has reviewed, approved, endorsed, or is in any way associated with these works.
-
-This project was developed outside the scope of any employment and without the use of proprietary, confidential, or restricted resources.
-
-All code/language in this repository is provided under the terms of the included MIT License.
-
+👉 This is where layered controls stop real attacks.
