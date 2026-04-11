@@ -1,5 +1,11 @@
 # 🔐 Zero Trust Conditional Access Playbook
 
+![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge)
+![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge)
+![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge)
+![PowerShell](https://img.shields.io/badge/Automation-PowerShell-5391FE?style=for-the-badge)
+![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
 ## ⚡ Quick Start
 
 Run the bootstrapper to install prerequisites, connect to Microsoft Graph, create named locations, deploy policies, and verify results.
