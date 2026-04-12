@@ -1,9 +1,14 @@
 # 🔐 Zero Trust Conditional Access Playbook
 
-![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge)
+![Microsoft Entra ID](https://img.shields.io/badge/Platform-Microsoft%20Entra%20ID-5E5ADB?style=for-the-badge&logo=microsoft&logoColor=white)
 ![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-0A66C2?style=for-the-badge)
 ![Conditional Access](https://img.shields.io/badge/Focus-Conditional%20Access-0078D4?style=for-the-badge)
-![PowerShell](https://img.shields.io/badge/Automation-PowerShell-5391FE?style=for-the-badge)
+![Identity Protection](https://img.shields.io/badge/Identity%20Protection-Entra%20P2-orange?style=for-the-badge)
+![PowerShell 7+](https://img.shields.io/badge/Automation-PowerShell%207+-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-00A4EF?style=for-the-badge&logo=microsoft&logoColor=white)
+![Policy as Code](https://img.shields.io/badge/Approach-Policy%20as%20Code-ff9800?style=for-the-badge)
+![Bootstrap Deployment](https://img.shields.io/badge/Deployment-Bootstrapper-4CAF50?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-MVP%20Ready-success?style=for-the-badge)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 > A practical, deployable Zero Trust Conditional Access baseline.
