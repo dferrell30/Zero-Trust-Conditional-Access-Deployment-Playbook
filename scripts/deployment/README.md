@@ -1,43 +1,61 @@
-# ⚙️ 1. PowerShell Setup (Step-by-Step)
+# ⚙️ PowerShell Setup
 
-## 📥 Install PowerShell (if needed)
+## 1. Install PowerShell 7
 
-Install PowerShell 7
-👉 https://aka.ms/powershell
-📦 Install Required Modules
+If needed, install **PowerShell 7**:
+
+**Download:** `https://aka.ms/powershell`
+
+---
+
+## 2. Install Required Modules
 
 Run PowerShell as Administrator:
 
+```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
-🔐 Required Permissions (IMPORTANT)
+```
 
-You’ll need:
+---
 
-Policy.ReadWrite.ConditionalAccess
-Directory.Read.All
-Application.Read.All
+## 3. Required Permissions
 
-🔑 Connect to Microsoft Graph
+You’ll need these Microsoft Graph scopes:
 
-```Powershell
+* `Policy.ReadWrite.ConditionalAccess`
+* `Directory.Read.All`
+* `Application.Read.All`
+
+---
+
+## 4. Connect to Microsoft Graph
+
+```powershell
 Connect-MgGraph -Scopes `
 "Policy.ReadWrite.ConditionalAccess",
 "Directory.Read.All",
 "Application.Read.All"
 ```
 
-Verify:
+Verify the connection:
 
-```Powershell
+```powershell
 Get-MgContext
 ```
 
+---
 
-🧱 2. Reusable Policy Deployment Framework
+# 🧱 Reusable Policy Deployment Framework
 
-(/scripts/deploy-policy.ps1):
+## Script Location
 
-```Powershell
+```text
+scripts/deploy-policy.ps1
+```
+
+## Example Function
+
+```powershell
 function New-ZTConditionalAccessPolicy {
     param(
         [Parameter(Mandatory=$true)]
@@ -56,68 +74,108 @@ function New-ZTConditionalAccessPolicy {
     Write-Host "Policy created successfully: $DisplayName"
 }
 ```
+
 ---
 
-🪜 Step 1 — Open PowerShell
+# 🚀 Manual Deployment Steps
 
-Run as Administrator
+## Step 1 — Open PowerShell
 
-🪜 Step 2 — Connect to Graph
+Run PowerShell as Administrator.
+
+---
+
+## Step 2 — Connect to Graph
+
+```powershell
 Connect-MgGraph -Scopes "Policy.ReadWrite.ConditionalAccess"
+```
 
-🪜 Step 3 — Navigate to Repo
+---
+
+## Step 3 — Navigate to the Repository
+
+```powershell
 cd C:\GitHub\entra-zero-trust-conditional-access
+```
 
-🪜 Step 4 — Import Script
+---
+
+## Step 4 — Import the Script
+
+```powershell
 . .\scripts\deploy-policy.ps1
+```
 
-🪜 Step 5 — Deploy Policies
-Single policy:
+---
 
+## Step 5 — Deploy Policies
+
+### Deploy a single policy
+
+```powershell
 New-ZTConditionalAccessPolicy `
 -DisplayName "ZTCA - Require MFA" `
 -JsonPath ".\policies\01-require-mfa\policy.json"
+```
 
-All policies:
+### Deploy all policies
+
+```powershell
 .\deploy-all.ps1
-
-🪜 Step 6 — Verify
-Get-MgIdentityConditionalAccessPolicy
-
-⚠️ Critical Notes (Production)
-
-Always:
-- Exclude break-glass accounts
-- Start in Report-only mode
-- Validate via Sign-in Logs
-
-Replace:
-- <BREAK_GLASS_OBJECT_ID>
-- <TRUSTED_LOCATION_ID>
+```
 
 ---
 
-# Named Location Script Information
+## Step 6 — Verify
 
-For an IP named location, they will usually change:
+```powershell
+Get-MgIdentityConditionalAccessPolicy
+```
 
-$DisplayName
-$IsTrusted
-$IpRanges
+---
 
-For a country named location, they will usually change:
+# ⚠️ Critical Notes
 
-$DisplayName
-$CountriesAndRegions
-$IncludeUnknownCountriesAndRegions
+## Always
 
-Microsoft documents IP named locations as using IP ranges in IPv4 CIDR or valid IPv6 format, and country named locations as using two-letter country/region codes.
+* Exclude break-glass accounts
+* Start in **Report-only** mode
+* Validate via **Sign-in Logs**
 
-How to run it
+## Replace these placeholders
 
-Install the Graph module, then connect with the needed scopes, then run the script. Microsoft documents the Graph cmdlet for named locations in the Microsoft.Graph.Identity.SignIns module, and the Entra PowerShell alternative in Microsoft.Entra.SignIns.
+* `<BREAK_GLASS_OBJECT_ID>`
+* `<TRUSTED_LOCATION_ID>`
 
-```Powershell
+---
+
+# 🌍 Named Location Script Information
+
+## For an IP named location, users usually change
+
+* `$DisplayName`
+* `$IsTrusted`
+* `$IpRanges`
+
+## For a country named location, users usually change
+
+* `$DisplayName`
+* `$CountriesAndRegions`
+* `$IncludeUnknownCountriesAndRegions`
+
+Microsoft documents:
+
+* IP named locations use **IPv4 CIDR** or valid **IPv6** format
+* Country named locations use **two-letter country/region codes**
+
+---
+
+# ▶️ How to Run the Named Location Script
+
+Install the Graph module, connect with the required scopes, then run the script.
+
+```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
 Connect-MgGraph -Scopes "Policy.Read.All","Policy.ReadWrite.ConditionalAccess"
 .\create-named-location.ps1
