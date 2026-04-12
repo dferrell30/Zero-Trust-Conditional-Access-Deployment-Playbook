@@ -1,5 +1,13 @@
 # ⚙️ PowerShell Setup & Deployment
 
+![PowerShell 7+](https://img.shields.io/badge/PowerShell-7+-blue?logo=powershell&logoColor=white)
+![Microsoft Graph](https://img.shields.io/badge/Microsoft%20Graph-API-green?logo=microsoft&logoColor=white)
+![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust-black)
+![Conditional Access](https://img.shields.io/badge/Conditional%20Access-Entra-purple)
+![Automation](https://img.shields.io/badge/Automation-Bootstrapper-brightgreen)
+![Idempotent](https://img.shields.io/badge/Idempotent-Yes-blue)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+
 ## 🚀 Recommended Method (Bootstrapper)
 
 The **bootstrapper is the primary and easiest way** to run this project.
