@@ -16,6 +16,23 @@ Run the bootstrapper to install prerequisites, connect to Microsoft Graph, creat
 cd "C:\Path\To\Zero-Trust-Conditional-Access-Playbook"
 pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
 ```
+## 📸 Deployment Example
+
+### 🚀 Bootstrap Execution
+
+![Bootstrap Run](images/bootstrap-run.png)
+
+---
+
+### ⚙️ Policy Deployment
+
+![Policy Deployment](images/policy-deployment.png)
+
+---
+
+### ✅ Verification
+
+![Verification](images/policy-verification.png)
 
 ---
 
