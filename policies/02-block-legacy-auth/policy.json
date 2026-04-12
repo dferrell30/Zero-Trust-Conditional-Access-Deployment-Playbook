@@ -20,7 +20,7 @@
   "grantControls": {
     "operator": "OR",
     "builtInControls": [
-      "compliantDevice"
+      "block"
     ]
   }
 }
