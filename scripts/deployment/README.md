@@ -1,6 +1,6 @@
-⚙️ 1. PowerShell Setup (Step-by-Step)
+# ⚙️ 1. PowerShell Setup (Step-by-Step)
 
-📥 Install PowerShell (if needed)
+## 📥 Install PowerShell (if needed)
 
 Install PowerShell 7
 👉 https://aka.ms/powershell
