@@ -8,7 +8,6 @@
 ![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-00A4EF?style=for-the-badge&logo=microsoft&logoColor=white)
 ![Policy as Code](https://img.shields.io/badge/Approach-Policy%20as%20Code-ff9800?style=for-the-badge)
 ![Bootstrap Deployment](https://img.shields.io/badge/Deployment-Bootstrapper-4CAF50?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-MVP%20Ready-success?style=for-the-badge)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 > A practical, deployable Zero Trust Conditional Access baseline.
