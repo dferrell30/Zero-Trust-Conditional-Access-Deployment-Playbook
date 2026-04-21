@@ -22,10 +22,6 @@ pwsh -ExecutionPolicy Bypass -File ".\scripts\bootstrap.ps1"
 ```
 ## 📸 Deployment Example
 
-### 🚀 Bootstrap Execution
-
-![Bootstrap Run](images/bootstrap-run.png)
-
 ---
 
 ### ⚙️ Policy Deployment
