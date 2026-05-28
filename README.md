@@ -244,3 +244,28 @@ Not affiliated with Microsoft.
 ## ⚖️ Professional Disclaimer
 
 This is an independent project built in a personal capacity with no employer affiliation.
+
+## Licensing Update
+
+Beginning with the current Community Edition release, Shadow Suite repositories transitioned to the Business Source License 1.1 (BSL).
+
+This change was made to support:
+
+* long-term platform sustainability
+* consistent Shadow Suite ecosystem licensing
+* branding protection
+* future platform development
+* responsible community distribution
+
+Shadow Suite Community Edition remains available for:
+
+* personal use
+* research
+* educational use
+* defensive security operations
+* internal organizational evaluation
+
+Commercial redistribution, managed service integration, SaaS hosting, rebranding, or derivative commercial offerings require written authorization.
+
+Previous releases remain subject to the license terms under which they were originally published.
+
